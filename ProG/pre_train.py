@@ -6,8 +6,12 @@ from torch_geometric.data import Data
 from random import shuffle
 import random
 
-from .prompt import GNN
-from .utils import gen_ran_output,load_data4pretrain,mkdir, graph_views
+from ProG.prompt import GNN
+from ProG.encoder.patch_encoder import PatchEncoder
+from ProG.utils import gen_ran_output,load_data4pretrain,mkdir,collate_fn
+from ProG.graph import graph_views, graph_views_ori
+
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class GraphCL(torch.nn.Module):
 
@@ -37,56 +41,80 @@ class GraphCL(torch.nn.Module):
 
 
 class PreTrain(torch.nn.Module):
-    def __init__(self, pretext="GraphCL", gnn_type='TransformerConv',
-                 input_dim=None, hid_dim=None, gln=2):
+    def __init__(self, pretext="GraphCL", gnn_type='GCN', encoder='Pathoduet', encoder_path=None,
+                 gln=2, num_workers=1):
         super(PreTrain, self).__init__()
         self.pretext = pretext
-        self.gnn_type=gnn_type
+        self.gnn_type = gnn_type
+        self.num_workers = num_workers
+
+        self.encoder=encoder
+        self.enc=PatchEncoder(encoder, encoder_path)
+
+        # pass: get the input_dim and hid_dim for each encoder
+        if encoder=='Pathoduet':
+            input_dim, hid_dim = 768, 768
+        else:
+            input_dim, hid_dim = 100, 100
 
         self.gnn = GNN(input_dim=input_dim, hid_dim=hid_dim, out_dim=hid_dim, gcn_layer_num=gln, pool=None,
                        gnn_type=gnn_type)
+        if self.enc is not None:
+            self.enc.to(device)
+            self.enc.eval()
+        self.gnn.to(device)
 
         if pretext in ['GraphCL', 'SimGRACE']:
             self.model = GraphCL(self.gnn, hid_dim=hid_dim)
+            self.model.to(device)
         else:
             raise ValueError("pretext should be GraphCL, SimGRACE")
 
     def get_loader(self, graph_list, batch_size,
-                   aug1=None, aug2=None, aug_ratio=None, pretext="GraphCL"):
+                   aug1=None, aug2=None, aug_ratio=None, pretext="GraphCL", dataname=None):
 
-        if len(graph_list) % batch_size == 1:
-            raise KeyError(
-                "batch_size {} makes the last batch only contain 1 graph, \n which will trigger a zero bug in GraphCL!")
+        # if len(graph_list) % batch_size == 1:
+        #     raise KeyError(
+        #         "batch_size {} makes the last batch only contain 1 graph, \n which will trigger a zero bug in GraphCL!")
 
         if pretext == 'GraphCL':
-            shuffle(graph_list)
-            if aug1 is None:
-                aug1 = random.sample(['dropN', 'permE', 'maskN'], k=1)
-            if aug2 is None:
-                aug2 = random.sample(['dropN', 'permE', 'maskN'], k=1)
-            if aug_ratio is None:
-                aug_ratio = random.randint(1, 3) * 1.0 / 10  # 0.1,0.2,0.3
+            if dataname == 'CiteSeer':
+                shuffle(graph_list)
 
-            print("===graph views: {} and {} with aug_ratio: {}".format(aug1, aug2, aug_ratio))
 
-            view_list_1 = []
-            view_list_2 = []
-            for g in graph_list:
-                view_g = graph_views(data=g, aug=aug1, aug_ratio=aug_ratio)
-                view_g = Data(x=view_g.x, edge_index=view_g.edge_index)
-                view_list_1.append(view_g)
-                view_g = graph_views(data=g, aug=aug2, aug_ratio=aug_ratio)
-                view_g = Data(x=view_g.x, edge_index=view_g.edge_index)
-                view_list_2.append(view_g)
+            if dataname in ['Prostate', 'TCGA']:
+                loader = DataLoader(graph_list, batch_size=batch_size, shuffle=False,
+                                     num_workers=self.num_workers)  # you must set shuffle=False !
+                loader.collate_fn = collate_fn
+                return loader, None
+            else:
+                if aug1 is None:
+                    aug1 = random.sample(['dropN', 'permE', 'maskN'], k=1)
+                if aug2 is None:
+                    aug2 = random.sample(['dropN', 'permE', 'maskN'], k=1)
+                if aug_ratio is None:
+                    aug_ratio = random.randint(1, 3) * 1.0 / 10  # 0.1,0.2,0.3
 
-            loader1 = DataLoader(view_list_1, batch_size=batch_size, shuffle=False,
-                                 num_workers=1)  # you must set shuffle=False !
-            loader2 = DataLoader(view_list_2, batch_size=batch_size, shuffle=False,
-                                 num_workers=1)  # you must set shuffle=False !
+                print("===graph views: {} and {} with aug_ratio: {}".format(aug1, aug2, aug_ratio))
 
-            return loader1, loader2
+                view_list_1 = []
+                view_list_2 = []
+                for g in graph_list:
+                    view_g = graph_views_ori(data=g, aug=aug1, aug_ratio=aug_ratio)
+                    view_g = Data(x=view_g.x, edge_index=view_g.edge_index)
+                    view_list_1.append(view_g)
+                    view_g = graph_views_ori(data=g, aug=aug2, aug_ratio=aug_ratio)
+                    view_g = Data(x=view_g.x, edge_index=view_g.edge_index)
+                    view_list_2.append(view_g)
+
+                loader1 = DataLoader(view_list_1, batch_size=batch_size, shuffle=False,
+                                     num_workers=self.num_workers)  # you must set shuffle=False !
+                loader2 = DataLoader(view_list_2, batch_size=batch_size, shuffle=False,
+                                     num_workers=self.num_workers)  # you must set shuffle=False !
+
+                return loader1, loader2
         elif pretext == 'SimGRACE':
-            loader = DataLoader(graph_list, batch_size=batch_size, shuffle=False, num_workers=1)
+            loader = DataLoader(graph_list, batch_size=batch_size, shuffle=False, num_workers=self.num_workers)
             return loader, None  # if pretext==SimGRACE, loader2 is None
         else:
             raise ValueError("pretext should be GraphCL, SimGRACE")
@@ -109,15 +137,46 @@ class PreTrain(torch.nn.Module):
 
         return train_loss_accum / total_step
 
-    def train_graphcl(self, model, loader1, loader2, optimizer):
+    def train_graphcl_ori(self, model, loader1, loader2, optimizer):
         model.train()
         train_loss_accum = 0
         total_step = 0
         for step, batch in enumerate(zip(loader1, loader2)):
             batch1, batch2 = batch
             optimizer.zero_grad()
-            x1 = model.forward_cl(batch1.x.to(device), batch1.edge_index.to(device), batch1.batch.to(device))
-            x2 = model.forward_cl(batch2.x.to(device), batch2.edge_index.to(device), batch2.batch.to(device))
+            batch1.x, batch1.edge_index, batch1.batch = batch1.x.to(device), batch1.edge_index.to(device), batch1.batch.to(device)
+            batch2.x, batch2.edge_index, batch2.batch = batch2.x.to(device), batch2.edge_index.to(device), batch2.batch.to(device)
+
+            x1 = model.forward_cl(batch1.x, batch1.edge_index, batch1.batch)
+            x2 = model.forward_cl(batch2.x, batch2.edge_index, batch2.batch)
+            loss = model.loss_cl(x1, x2)
+
+            loss.backward()
+            optimizer.step()
+
+            train_loss_accum += float(loss.detach().cpu().item())
+            total_step = total_step + 1
+
+        return train_loss_accum / total_step
+
+    def train_graphcl(self, model, loader1, loader2, optimizer):
+        model.train()
+        train_loss_accum = 0
+        total_step = 0
+        for step, batch in enumerate(zip(loader1)):
+            batch1, batch2 = batch[0]
+            optimizer.zero_grad()
+
+            batch1.x, batch1.edge_index, batch1.batch = batch1.x.to(device), batch1.edge_index.to(device), batch1.batch.to(device)
+            batch2.x, batch2.edge_index, batch2.batch = batch2.x.to(device), batch2.edge_index.to(device), batch2.batch.to(device)
+
+            # get the patch embedding
+            if self.enc is not None:
+                batch1.x = self.enc(batch1.x)[0][:, 2:].mean(dim=1)
+                batch2.x = self.enc(batch2.x)[0][:, 2:].mean(dim=1)
+
+            x1 = model.forward_cl(batch1.x, batch1.edge_index, batch1.batch)
+            x2 = model.forward_cl(batch2.x, batch2.edge_index, batch2.batch)
             loss = model.loss_cl(x1, x2)
 
             loss.backward()
@@ -129,10 +188,10 @@ class PreTrain(torch.nn.Module):
         return train_loss_accum / total_step
 
     def train(self, dataname, graph_list, batch_size=10, aug1='dropN', aug2="permE", aug_ratio=None, lr=0.01,
-              decay=0.0001, epochs=100):
+              decay=0.0001, epochs=100, checkpoint_suffix=''):
 
         loader1, loader2 = self.get_loader(graph_list, batch_size, aug1=aug1, aug2=aug2,
-                                           pretext=self.pretext)
+                                           pretext=self.pretext, dataname=dataname)
         # print('start training {} | {} | {}...'.format(dataname, pre_train_method, gnn_type))
         optimizer = optim.Adam(self.model.parameters(), lr=lr, weight_decay=decay)
 
@@ -150,7 +209,7 @@ class PreTrain(torch.nn.Module):
             if train_loss_min > train_loss:
                 train_loss_min = train_loss
                 torch.save(self.model.gnn.state_dict(),
-                           "./pre_trained_gnn/{}.{}.{}.pth".format(dataname, self.pretext, self.gnn_type))
+                           "./pre_trained_gnn/{}.{}.{}.{}.{}.pth".format(dataname, self.pretext, self.gnn_type, checkpoint_suffix, str(round(train_loss_min,4))))
                 # do not use '../pre_trained_gnn/' because hope there should be two folders: (1) '../pre_trained_gnn/'  and (2) './pre_trained_gnn/'
                 # only selected pre-trained models will be moved into (1) so that we can keep reproduction
                 print("+++model saved ! {}.{}.{}.pth".format(dataname, self.pretext, self.gnn_type))

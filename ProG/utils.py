@@ -4,17 +4,17 @@ import random
 import torch
 from copy import deepcopy
 from random import shuffle
-from torch_geometric.data import Data
+from torch_geometric.data import Data, Batch
 from torch_geometric.utils import subgraph, k_hop_subgraph
-import pickle as pk
-from torch_geometric.utils import to_undirected
-from torch_geometric.loader.cluster import ClusterData
-from torch import nn, optim
 
 import torch.nn.functional as F
 
+from ProG.dataset.prostate_RJ import Prostate
+from ProG.dataset.CiteSeer import CiteSeer
 
 seed = 0
+
+datasets = {'CiteSeer': CiteSeer, 'Prostate': Prostate}
 
 
 def seed_everything(seed):
@@ -52,18 +52,22 @@ def gen_ran_output(data, model):
 
 # used in pre_train.py
 def load_data4pretrain(dataname='CiteSeer', num_parts=200):
-    data = pk.load(open('../Dataset/{}/feature_reduced.data'.format(dataname), 'br'))
-    print(data)
+    graph_list = datasets[dataname](num_parts=num_parts)
 
-    x = data.x.detach()
-    edge_index = data.edge_index
-    edge_index = to_undirected(edge_index)
-    data = Data(x=x, edge_index=edge_index)
-    input_dim = data.x.shape[1]
-    hid_dim = input_dim
-    graph_list = list(ClusterData(data=data, num_parts=num_parts, save_dir='../Dataset/{}/'.format(dataname)))
+    return graph_list
 
-    return graph_list, input_dim, hid_dim
+
+def collate_fn(data_list):
+    view_1_list, view_2_list = [], []
+    for view_1, view_2 in data_list:
+        view_1.edge_index = torch.tensor(view_1.edge_index, dtype=torch.long)
+        view_2.edge_index = torch.tensor(view_2.edge_index, dtype=torch.long)
+        view_1_list.append(view_1)
+        view_2_list.append(view_2)
+
+    batch_view_1 = Batch.from_data_list(view_1_list)
+    batch_view_2 = Batch.from_data_list(view_2_list)
+    return batch_view_1, batch_view_2
 
 
 # used in prompt.py
@@ -78,27 +82,6 @@ def act(x=None, act_type='leakyrelu'):
             return torch.nn.Tanh()
         else:
             return torch.tanh(x)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 def __seeds_list__(nodes):
     split_size = max(5, int(nodes.shape[0] / 400))
@@ -177,72 +160,3 @@ def __induced_graph_list_for_graphs__(seeds_list, label, p, num_nodes, potential
     return induced_graph_list
 
 
-def graph_views(data, aug='random', aug_ratio=0.1):
-    if aug == 'dropN':
-        data = drop_nodes(data, aug_ratio)
-
-    elif aug == 'permE':
-        data = permute_edges(data, aug_ratio)
-    elif aug == 'maskN':
-        data = mask_nodes(data, aug_ratio)
-    elif aug == 'random':
-        n = np.random.randint(2)
-        if n == 0:
-            data = drop_nodes(data, aug_ratio)
-        elif n == 1:
-            data = permute_edges(data, aug_ratio)
-        else:
-            print('augmentation error')
-            assert False
-    return data
-
-
-def drop_nodes(data, aug_ratio):
-    node_num, _ = data.x.size()
-    _, edge_num = data.edge_index.size()
-    drop_num = int(node_num * aug_ratio)
-
-    idx_perm = np.random.permutation(node_num)
-
-    idx_drop = idx_perm[:drop_num]
-    idx_nondrop = idx_perm[drop_num:]
-    idx_nondrop.sort()
-    idx_dict = {idx_nondrop[n]: n for n in list(range(idx_nondrop.shape[0]))}
-
-    edge_index = data.edge_index.numpy()
-
-    edge_index = [[idx_dict[edge_index[0, n]], idx_dict[edge_index[1, n]]] for n in range(edge_num) if
-                  (not edge_index[0, n] in idx_drop) and (not edge_index[1, n] in idx_drop)]
-    try:
-        data.edge_index = torch.tensor(edge_index).transpose_(0, 1)
-        data.x = data.x[idx_nondrop]
-    except:
-        data = data
-
-    return data
-
-
-def permute_edges(data, aug_ratio):
-    """
-    only change edge_index, all the other keys unchanged and consistent
-    """
-    node_num, _ = data.x.size()
-    _, edge_num = data.edge_index.size()
-    permute_num = int(edge_num * aug_ratio)
-    edge_index = data.edge_index.numpy()
-
-    idx_delete = np.random.choice(edge_num, (edge_num - permute_num), replace=False)
-    data.edge_index = data.edge_index[:, idx_delete]
-
-    return data
-
-
-def mask_nodes(data, aug_ratio):
-    node_num, feat_dim = data.x.size()
-    mask_num = int(node_num * aug_ratio)
-
-    token = data.x.mean(dim=0)
-    idx_mask = np.random.choice(node_num, mask_num, replace=False)
-    data.x[idx_mask] = token.clone().detach()
-
-    return data

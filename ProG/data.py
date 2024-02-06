@@ -21,15 +21,26 @@ def multi_class_NIG(dataname, num_class,shots=100):
         data_path1 = './Dataset/{}/induced_graphs/task{}.meta.train.support'.format(dataname, task_id)
         data_path2 = './Dataset/{}/induced_graphs/task{}.meta.train.query'.format(dataname, task_id)
 
-        with (open(data_path1, 'br') as f1, open(data_path2, 'br') as f2):
-            list1, list2 = pk.load(f1)['pos'], pk.load(f2)['pos']
-            data_list = list1 + list2
-            data_list = data_list[0:shots]
-            statistic['train'].append((task_id, len(data_list)))
+        # with (open(data_path1, 'br') as f1, open(data_path2, 'br') as f2):
+        #     list1, list2 = pk.load(f1)['pos'], pk.load(f2)['pos']
+        #     data_list = list1 + list2
+        #     data_list = data_list[0:shots]
+        #     statistic['train'].append((task_id, len(data_list)))
+        #
+        #     for g in data_list:
+        #         g.y = task_id
+        #         train_list.append(g)
+        with open(data_path1, 'br') as f1:
+            list1 = pk.load(f1)['pos']
+            with open(data_path2, 'br') as f2:
+                list2 = pk.load(f2)['pos']
+                data_list = list1 + list2
+                data_list = data_list[0:shots]
+                statistic['train'].append((task_id, len(data_list)))
 
-            for g in data_list:
-                g.y = task_id
-                train_list.append(g)
+                for g in data_list:
+                    g.y = task_id
+                    train_list.append(g)
 
     shuffle(train_list)
     train_data = Batch.from_data_list(train_list)
@@ -39,16 +50,28 @@ def multi_class_NIG(dataname, num_class,shots=100):
         data_path1 = './Dataset/{}/induced_graphs/task{}.meta.test.support'.format(dataname, task_id)
         data_path2 = './Dataset/{}/induced_graphs/task{}.meta.test.query'.format(dataname, task_id)
 
-        with (open(data_path1, 'br') as f1, open(data_path2, 'br') as f2):
-            list1, list2 = pk.load(f1)['pos'], pk.load(f2)['pos']
-            data_list = list1 + list2
-            data_list = data_list[0:shots]
+        # with (open(data_path1, 'br') as f1, open(data_path2, 'br') as f2):
+        #     list1, list2 = pk.load(f1)['pos'], pk.load(f2)['pos']
+        #     data_list = list1 + list2
+        #     data_list = data_list[0:shots]
+        #
+        #     statistic['test'].append((task_id, len(data_list)))
+        #
+        #     for g in data_list:
+        #         g.y = task_id
+        #         test_list.append(g)
+        with open(data_path1, 'br') as f1:
+            list1 = pk.load(f1)['pos']
+            with open(data_path2, 'br') as f2:
+                list2 = pk.load(f2)['pos']
+                data_list = list1 + list2
+                data_list = data_list[0:shots]
 
-            statistic['test'].append((task_id, len(data_list)))
+                statistic['test'].append((task_id, len(data_list)))
 
-            for g in data_list:
-                g.y = task_id
-                test_list.append(g)
+                for g in data_list:
+                    g.y = task_id
+                    test_list.append(g)
 
     shuffle(test_list)
     test_data = Batch.from_data_list(test_list)

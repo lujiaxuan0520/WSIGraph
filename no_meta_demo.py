@@ -222,6 +222,6 @@ if __name__ == '__main__':
     print(device)
     # device = torch.device('cpu')
 
-    # pretrain()
-    prompt_w_o_h(dataname="CiteSeer", gnn_type="TransformerConv", num_class=6, task_type='multi_class_classification')
+    pretrain()
+    # prompt_w_o_h(dataname="CiteSeer", gnn_type="TransformerConv", num_class=6, task_type='multi_class_classification')
     # prompt_w_h(dataname="CiteSeer", gnn_type="TransformerConv", num_class=6, task_type='multi_class_classification')
