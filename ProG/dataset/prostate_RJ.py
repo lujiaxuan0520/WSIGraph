@@ -250,12 +250,16 @@ class Prostate_e2e(data.Dataset):
             aug2 = random.sample(['dropN', 'permE', 'maskN'], k=1)
             aug_ratio = random.randint(1, 3) * 1.0 / 10  # 0.1,0.2,0.3
 
-            view_1 = graph_views(data=g_1, aug=aug1, aug_ratio=aug_ratio)
+            view_1, coord_1 = graph_views(data=g_1, aug=aug1, aug_ratio=aug_ratio, coordinates=coordinates)
             view_1 = Data(x=view_1.x, edge_index=view_1.edge_index)
-            view_2 = graph_views(data=g_2, aug=aug2, aug_ratio=aug_ratio)
+            view_2, coord_2 = graph_views(data=g_2, aug=aug2, aug_ratio=aug_ratio, coordinates=coordinates)
             view_2 = Data(x=view_2.x, edge_index=view_2.edge_index)
         else:
             view_1, view_2 = g_1, g_2
+            coord_1, coord_2 = coordinates, coordinates
+
+        view_1 = np.array([view_1, coord_1])
+        view_2 = np.array([view_2, coord_2])
 
         return view_1, view_2
 
@@ -273,14 +277,14 @@ class Prostate_e2e(data.Dataset):
 class Config:
     def __init__(self):
         self.Data = {
-            'base_path': '/mnt/data/smart_health_02/lujiaxuan/workingplace/GleasonGrade/segResData1/patches', # loading the patch data
+            'base_path': '/mnt/data/smart_health_02/transfers/lujiaxuan/workingplace/GleasonGrade/segResData1/patches', # loading the patch data
             # 'base_path': '/mnt/data/smart_health_02/lujiaxuan/workingplace/GleasonGrade/segResData1/features-pathoduet-p2/pt_files',
             # loading the features data
-            'slide_path': '/mnt/data/oss_beijing/lujiaxuan/GleasonGrade/rawdata',
+            'slide_path': '/mnt/data/oss_beijing/transfers/lujiaxuan/GleasonGrade/rawdata',
             'fold': 0,
             'nfolds': 4,
             'max_patch_num': 500,  # 200, For deployment adjust according to hardware capability
-            'label_dir': '/mnt/data/smart_health_02/lujiaxuan/workingplace/GleasonGrade/code/Mixed_supervision/dataset_csv/prostate/',
+            'label_dir': '/mnt/data/smart_health_02/transfers/lujiaxuan/workingplace/GleasonGrade/code/Mixed_supervision/dataset_csv/prostate/',
             'data_load_mode': 0,  # 0: all data info in a single .bin file, 1: use SegGini loading method
             'train_dataset': {
                 'image_dir': '',  # Assuming image_dir is to be set or is empty as per given structure

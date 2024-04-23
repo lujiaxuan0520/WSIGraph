@@ -19,12 +19,16 @@ def make_parse():
     parser.add_argument('--model', default='GraphCL', type=str) # 'GraphCL', 'SimGRACE'
 
     parser.add_argument('--gnn', default='TransformerConv', type=str) # 'GAT', 'GCN'
+    parser.add_argument('--mode', default='hard', type=str)  # 'original', 'hard', 'soft'
+    parser.add_argument('--layer', default=2, type=int) # the layer of GNN
+    parser.add_argument('--cluster_sizes', nargs='+', type=int, help='cluster size for each layer') # 100,50,10
     parser.add_argument('--dataset', default='CiteSeer', type=str) # 'CiteSeer', 'prostate'
     parser.add_argument('--encoder', default=None, type=str)  # 'Pathoduet', 'ResNet50', 'None'
     parser.add_argument('--encoder_path', default=None, type=str)
     parser.add_argument('--checkpoint_suffix', default='', type=str) # the suffix of checkpoint name
 
     parser.add_argument('--batch_size', default=10, type=int)
+    parser.add_argument('--learning_rate', default=0.01, type=float)
     parser.add_argument('--num_parts', default=200, type=int)
     parser.add_argument('--num_workers', default=1, type=int)
 
@@ -111,9 +115,10 @@ if __name__ == '__main__':
     graph_list = load_data4pretrain(dataname, num_parts)
 
     print("create PreTrain instance...")
-    pt = PreTrain(pretext, gnn_type, encoder, encoder_path, gln=2, num_workers=args.num_workers)
+    pt = PreTrain(pretext, gnn_type, encoder, encoder_path, gln=args.layer, cluster_sizes=args.cluster_sizes,
+                  mode=args.mode, num_workers=args.num_workers)
 
     print("pre-training...")
     pt.train(dataname, graph_list, batch_size=batch_size,
-             aug1='dropN', aug2="permE", aug_ratio=None,
-             lr=0.01, decay=0.0001, epochs=100, checkpoint_suffix=checkpoint_suffix)
+             aug1='dropN', aug2="permE", aug_ratio=None, lr=args.learning_rate, decay=0.0001, epochs=100,
+             checkpoint_suffix=args.checkpoint_suffix, save_epoch=True)

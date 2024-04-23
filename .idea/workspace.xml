@@ -8,150 +8,16 @@
       <change beforePath="$PROJECT_DIR$/.idea/KDD_BEST_PAPER.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/KDD_BEST_PAPER.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/feature_reduced.data" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task0.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task0.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task0.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task0.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task1.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task1.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task1.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task1.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task10.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task10.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task10.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task10.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task11.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task11.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task11.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task11.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task2.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task2.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task2.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task2.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task3.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task3.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task3.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task3.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task4.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task4.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task4.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task4.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task5.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task5.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task5.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task5.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task6.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task6.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task6.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task6.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task7.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task7.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task7.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task7.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task8.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task8.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task8.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task8.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task9.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task9.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task9.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/index/task9.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task0.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task0.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task0.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task0.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task1.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task1.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task1.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task1.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task10.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task10.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task10.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task10.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task11.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task11.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task11.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task11.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task12.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task12.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task12.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task12.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task13.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task13.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task13.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task13.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task14.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task14.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task14.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task14.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task15.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task15.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task15.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task15.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task16.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task16.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task16.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task16.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task17.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task17.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task17.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task17.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task2.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task2.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task2.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task2.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task3.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task3.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task3.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task3.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task4.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task4.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task4.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task4.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task5.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task5.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task5.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task5.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task6.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task6.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task6.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task6.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task7.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task7.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task7.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task7.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task8.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task8.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task8.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task8.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task9.meta.test.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task9.meta.test.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task9.meta.train.query" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/induced_graphs/task9.meta.train.support" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/partition_10.pt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/partition_200.pt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/processed/data.pt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/processed/pre_filter.pt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/processed/pre_transform.pt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/raw/ind.citeseer.allx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/raw/ind.citeseer.ally" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/raw/ind.citeseer.graph" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/raw/ind.citeseer.test.index" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/raw/ind.citeseer.tx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/raw/ind.citeseer.ty" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/raw/ind.citeseer.x" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dataset/CiteSeer/raw/ind.citeseer.y" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProG/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProG/data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProG/dataset/prostate_RJ.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProG/dataset/prostate_RJ.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProG/encoder/patch_encoder.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProG/encoder/patch_encoder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProG/encoder/resnet.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProG/encoder/resnet.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProG/graph.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProG/graph.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProG/pre_train.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProG/pre_train.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProG/pre_trained_gnn/CiteSeer.GraphCL.GAT.pth" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProG/pre_trained_gnn/CiteSeer.GraphCL.GCN.pth" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProG/pre_trained_gnn/CiteSeer.GraphCL.TransformerConv.pth" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProG/pre_trained_gnn/CiteSeer.SimGRACE.GAT.pth" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProG/pre_trained_gnn/CiteSeer.SimGRACE.GCN.pth" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProG/pre_trained_gnn/CiteSeer.SimGRACE.TransformerConv.pth" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProG/prompt.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProG/prompt.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ProG/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/ProG/utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/no_meta_demo.py" beforeDir="false" afterPath="$PROJECT_DIR$/no_meta_demo.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README-OWN.md" beforeDir="false" afterPath="$PROJECT_DIR$/README-OWN.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pre_trained_gnn/CiteSeer.GraphCL.TransformerConv.pth" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/pretrain.py" beforeDir="false" afterPath="$PROJECT_DIR$/pretrain.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -213,26 +79,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "D:/OneDrive - 上海人工智能创新中心/WSIGraph/code/ProG/ProG/encoder",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "reference.idesettings.debugger.python",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/admin/OneDrive/ai_project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="PyDebuggerOptionsProvider">
     <option name="mySupportGeventDebugging" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\OneDrive - 上海人工智能创新中心\WSIGraph\code\ProG\ProG" />
       <recent name="D:\OneDrive - 上海人工智能创新中心\WSIGraph\code\ProG\ProG\encoder" />
       <recent name="D:\OneDrive - 上海人工智能创新中心\WSIGraph\code\ProG" />
       <recent name="$PROJECT_DIR$" />
@@ -284,7 +151,7 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/pretrain.py" />
-      <option name="PARAMETERS" value="--model GraphCL --gnn GCN --dataset Prostate --encoder Pathoduet --encoder_path /mnt/data/smart_health_02/lujiaxuan/workingplace/GleasonGrade/code/PathoDuet/models/checkpoint_p2.pth --batch_size 10 --num_parts 200 --num_workers 0" />
+      <option name="PARAMETERS" value="--model GraphCL --gnn GCN --mode soft --dataset Prostate --encoder ResNet18 --encoder_path /mnt/data/smart_health_02/transfers/lujiaxuan/workingplace/GleasonGrade/code/PathoDuet/models/checkpoint_p2.pth --batch_size 2 --num_parts 200 --num_workers 0 --cluster_sizes 100 50 10" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -353,7 +220,10 @@
       <workItem from="1693205728900" duration="301000" />
       <workItem from="1698892135874" duration="3897000" />
       <workItem from="1706710599471" duration="45202000" />
-      <workItem from="1707028474569" duration="69994000" />
+      <workItem from="1707028474569" duration="135043000" />
+      <workItem from="1708939280912" duration="217784000" />
+      <workItem from="1712892510356" duration="51085000" />
+      <workItem from="1713321882817" duration="22261000" />
     </task>
     <task id="LOCAL-00001" summary="add MIT license">
       <created>1689235811326</created>
@@ -608,17 +478,17 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
-          <line>38</line>
+          <line>46</line>
           <option name="timeStamp" value="17" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
-          <line>50</line>
+          <line>58</line>
           <option name="timeStamp" value="18" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ProG/dataset/prostate_RJ.py</url>
-          <line>336</line>
+          <line>340</line>
           <option name="timeStamp" value="26" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -628,59 +498,152 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ProG/dataset/prostate_RJ.py</url>
-          <line>315</line>
+          <line>319</line>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ProG/dataset/prostate_RJ.py</url>
-          <line>308</line>
+          <line>312</line>
           <option name="timeStamp" value="34" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ProG/dataset/prostate_RJ.py</url>
-          <line>306</line>
+          <line>310</line>
           <option name="timeStamp" value="44" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ProG/pre_train.py</url>
-          <line>165</line>
-          <option name="timeStamp" value="56" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ProG/pre_train.py</url>
-          <line>85</line>
+          <line>110</line>
           <option name="timeStamp" value="59" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ProG/pre_train.py</url>
-          <line>169</line>
-          <option name="timeStamp" value="62" />
+          <url>file://$PROJECT_DIR$/ProG/encoder/patch_encoder.py</url>
+          <line>12</line>
+          <option name="timeStamp" value="67" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/ProG/pre_train.py</url>
-          <line>79</line>
-          <option name="timeStamp" value="63" />
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>52</line>
+          <option name="timeStamp" value="69" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ProG/encoder/patch_encoder.py</url>
-          <line>26</line>
-          <option name="timeStamp" value="64" />
+          <line>15</line>
+          <option name="timeStamp" value="70" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/ProG/pre_train.py</url>
-          <line>25</line>
-          <option name="timeStamp" value="65" />
+          <line>70</line>
+          <option name="timeStamp" value="85" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>151</line>
+          <option name="timeStamp" value="89" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>238</line>
+          <option name="timeStamp" value="91" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>116</line>
+          <option name="timeStamp" value="92" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>112</line>
+          <option name="timeStamp" value="94" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>122</line>
+          <option name="timeStamp" value="95" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>171</line>
+          <option name="timeStamp" value="97" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>118</line>
+          <option name="timeStamp" value="99" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>184</line>
+          <option name="timeStamp" value="101" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>197</line>
+          <option name="timeStamp" value="102" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>140</line>
+          <option name="timeStamp" value="103" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/pre_train.py</url>
+          <line>73</line>
+          <option name="timeStamp" value="107" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/utils.py</url>
+          <line>80</line>
+          <option name="timeStamp" value="109" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>414</line>
+          <option name="timeStamp" value="128" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>317</line>
+          <option name="timeStamp" value="149" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>371</line>
+          <option name="timeStamp" value="155" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>397</line>
+          <option name="timeStamp" value="157" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ProG/prompt.py</url>
+          <line>398</line>
+          <option name="timeStamp" value="158" />
         </line-breakpoint>
       </breakpoints>
+      <default-breakpoints>
+        <breakpoint type="python-exception">
+          <properties notifyOnTerminate="true" exception="BaseException">
+            <option name="notifyOnTerminate" value="true" />
+          </properties>
+        </breakpoint>
+      </default-breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="x" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/KDD_BEST_PAPER$meta_demo.coverage" NAME="meta_demo Coverage Results" MODIFIED="1689234791152" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/ProG$pretrain.coverage" NAME="pretrain (Porstate) Coverage Results" MODIFIED="1707213804746" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ProG$pretrain.coverage" NAME="pretrain (Porstate) Coverage Results" MODIFIED="1708415762451" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ProG$pre_train.coverage" NAME="pre_train Coverage Results" MODIFIED="1706759763360" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProG" />
     <SUITE FILE_PATH="coverage/ProG$no_meta_demo.coverage" NAME="no_meta_demo Coverage Results" MODIFIED="1706873000181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ProG$pretrain__CiteSeer__.coverage" NAME="pretrain (CiteSeer)  Coverage Results" MODIFIED="1707199453474" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ProG$prostate_RJ.coverage" NAME="prostate_RJ Coverage Results" MODIFIED="1707128381968" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ProG/dataset" />
+    <SUITE FILE_PATH="coverage/ProG$pretrain__Porstate_.coverage" NAME="pretrain (Porstate) Coverage Results" MODIFIED="1713334400594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/KDD_BEST_PAPER$no_meta_demo.coverage" NAME="no_meta_demo Coverage Results" MODIFIED="1689222433969" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/KDD_BEST_PAPER$main.coverage" NAME="main Coverage Results" MODIFIED="1689067782425" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ProG$meta_demo.coverage" NAME="meta_demo Coverage Results" MODIFIED="1692253481466" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

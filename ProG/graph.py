@@ -49,12 +49,12 @@ def graph_views_ori(data, aug='random', aug_ratio=0.1):
             assert False
     return data
 
-def graph_views(data, aug='random', aug_ratio=0.1):
+def graph_views(data, aug='random', aug_ratio=0.1, coordinates=None):
     if isinstance(aug, list):
         aug = aug[0]
 
     if aug == 'dropN':
-        data = drop_nodes(data, aug_ratio)
+        data, coordinates = drop_nodes(data, aug_ratio, coordinates)
     elif aug == 'permE':
         data = permute_edges(data, aug_ratio)
     elif aug == 'maskN':
@@ -62,13 +62,17 @@ def graph_views(data, aug='random', aug_ratio=0.1):
     elif aug == 'random':
         n = np.random.randint(2)
         if n == 0:
-            data = drop_nodes(data, aug_ratio)
+            data, coordinates = drop_nodes(data, aug_ratio, coordinates)
         elif n == 1:
             data = permute_edges(data, aug_ratio)
         else:
             print('augmentation error')
             assert False
-    return data
+
+    if coordinates is not None:
+        return data, coordinates
+    else:
+        return data
 
 
 def drop_nodes_ori(data, aug_ratio):
@@ -96,7 +100,7 @@ def drop_nodes_ori(data, aug_ratio):
     return data
 
 
-def drop_nodes(data, aug_ratio):
+def drop_nodes(data, aug_ratio, coordinates=None):
     node_num, c, h, w = data.x.size()
     _, edge_num = data.edge_index.shape
     drop_num = int(node_num * aug_ratio)
@@ -119,7 +123,11 @@ def drop_nodes(data, aug_ratio):
     except:
         data = data
 
-    return data
+    if coordinates is not None:
+        coordinates = coordinates[idx_nondrop]
+        return data, coordinates
+    else:
+        return data
 
 
 def permute_edges_ori(data, aug_ratio):

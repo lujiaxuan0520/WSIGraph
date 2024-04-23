@@ -6,6 +6,7 @@ from copy import deepcopy
 from random import shuffle
 from torch_geometric.data import Data, Batch
 from torch_geometric.utils import subgraph, k_hop_subgraph
+from torch.nn.utils.rnn import pad_sequence
 
 import torch.nn.functional as F
 
@@ -57,17 +58,54 @@ def load_data4pretrain(dataname='CiteSeer', num_parts=200):
     return graph_list
 
 
+def ensure_tensor(data, dtype):
+    if isinstance(data, np.ndarray):
+        tensor = torch.from_numpy(data).to(dtype=dtype)
+    elif isinstance(data, torch.Tensor):
+        tensor = data.to(dtype=dtype)
+
+    return tensor
+
 def collate_fn(data_list):
     view_1_list, view_2_list = [], []
-    for view_1, view_2 in data_list:
-        view_1.edge_index = torch.tensor(view_1.edge_index, dtype=torch.long)
-        view_2.edge_index = torch.tensor(view_2.edge_index, dtype=torch.long)
+    coord_1_list, coord_2_list = [], []
+    # for view_1, view_2 in data_list:
+    #     view_1.edge_index = torch.tensor(view_1.edge_index, dtype=torch.long)
+    #     view_2.edge_index = torch.tensor(view_2.edge_index, dtype=torch.long)
+    #     view_1_list.append(view_1)
+    #     view_2_list.append(view_2)
+    for item in data_list:
+        view_1, coord_1 = item[0][0], item[0][1]
+        view_2, coord_2 = item[1][0], item[1][1]
+
+        # view_1.edge_index = torch.tensor(view_1.edge_index, dtype=torch.long)
+        # view_2.edge_index = torch.tensor(view_2.edge_index, dtype=torch.long)
+        # view_1_list.append(view_1)
+        # view_2_list.append(view_2)
+        # coord_1_list.append(torch.tensor(coord_1, dtype=torch.float))
+        # coord_2_list.append(torch.tensor(coord_2, dtype=torch.float))
+        view_1.edge_index = ensure_tensor(view_1.edge_index, dtype=torch.long)
+        view_2.edge_index = ensure_tensor(view_2.edge_index, dtype=torch.long)
         view_1_list.append(view_1)
         view_2_list.append(view_2)
+        coord_1_list.append(ensure_tensor(coord_1, dtype=torch.float))
+        coord_2_list.append(ensure_tensor(coord_2, dtype=torch.float))
 
     batch_view_1 = Batch.from_data_list(view_1_list)
     batch_view_2 = Batch.from_data_list(view_2_list)
-    return batch_view_1, batch_view_2
+    # batch_coord_1 = pad_sequence(coord_1_list, batch_first=True, padding_value=0)
+    # batch_coord_2 = pad_sequence(coord_2_list, batch_first=True, padding_value=0)
+    batch_coord_1 = torch.cat(coord_1_list, dim=0)
+    batch_coord_2 = torch.cat(coord_2_list, dim=0)
+    return batch_view_1, batch_view_2, batch_coord_1, batch_coord_2
+
+
+def get_model(model):
+    # check whether the model is wrapped by DataParallel
+    if isinstance(model, torch.nn.DataParallel):
+        return model.module
+    else:
+        return model
 
 
 # used in prompt.py
@@ -82,6 +120,16 @@ def act(x=None, act_type='leakyrelu'):
             return torch.nn.Tanh()
         else:
             return torch.tanh(x)
+
+
+def print_model_parameters(model):
+    total_params = 0
+    for name, parameter in model.named_parameters():
+        if not parameter.requires_grad: continue
+        param = parameter.numel()
+        total_params+=param
+        print(f"{name} has {param} parameters")
+    print(f"Total Parameters: {total_params}")
 
 def __seeds_list__(nodes):
     split_size = max(5, int(nodes.shape[0] / 400))
