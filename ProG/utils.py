@@ -2,6 +2,7 @@ import os
 import numpy as np
 import random
 import torch
+import torch.nn as nn
 from copy import deepcopy
 from random import shuffle
 from torch_geometric.data import Data, Batch
@@ -52,8 +53,8 @@ def gen_ran_output(data, model):
 
 
 # used in pre_train.py
-def load_data4pretrain(dataname='CiteSeer', num_parts=200):
-    graph_list = datasets[dataname](num_parts=num_parts)
+def load_data4pretrain(dataname='CiteSeer', num_parts=200, phase='train'):
+    graph_list = datasets[dataname](num_parts=num_parts, phase=phase)
 
     return graph_list
 
@@ -97,7 +98,14 @@ def collate_fn(data_list):
     # batch_coord_2 = pad_sequence(coord_2_list, batch_first=True, padding_value=0)
     batch_coord_1 = torch.cat(coord_1_list, dim=0)
     batch_coord_2 = torch.cat(coord_2_list, dim=0)
-    return batch_view_1, batch_view_2, batch_coord_1, batch_coord_2
+
+    if len(data_list[0]) == 3: # have label
+        label_list = []
+        for item in data_list:
+            label_list.append(item[2])
+        return batch_view_1, batch_view_2, batch_coord_1, batch_coord_2, torch.tensor(label_list)
+    else:
+        return batch_view_1, batch_view_2, batch_coord_1, batch_coord_2
 
 
 def get_model(model):
@@ -130,6 +138,68 @@ def print_model_parameters(model):
         total_params+=param
         print(f"{name} has {param} parameters")
     print(f"Total Parameters: {total_params}")
+
+
+class Gprompt_tuning_loss(nn.Module):
+    def __init__(self, tau=0.1):
+        super(Gprompt_tuning_loss, self).__init__()
+        self.tau = tau
+
+    def forward(self, embedding, center_embedding, labels):
+        # 对于每个样本对（xi,yi), loss为 -ln(sim正 / sim正+sim负)
+
+        # 计算所有样本与所有个类原型的相似度
+        similarity_matrix = F.cosine_similarity(embedding.unsqueeze(1), center_embedding.unsqueeze(0),
+                                                dim=-1) / self.tau
+        exp_similarities = torch.exp(similarity_matrix)
+        # Sum exponentiated similarities for the denominator
+        pos_neg = torch.sum(exp_similarities, dim=1, keepdim=True)
+        # select the exponentiated similarities for the correct classes for the every pair (xi,yi)
+        pos = exp_similarities.gather(1, labels.view(-1, 1))
+        L_prompt = -torch.log(pos / pos_neg)
+        loss = torch.sum(L_prompt)
+
+        return loss
+
+
+def distance2center(input,center):
+    n = input.size(0)
+    k = center.size(0)
+    input_power = torch.sum(input * input, dim=1, keepdim=True).expand(n, k)
+    center_power = torch.sum(center * center, dim=1).expand(n, k)
+
+    distance = input_power + center_power - 2 * torch.mm(input, center.transpose(0, 1))
+    return distance
+
+
+def center_embedding(input, index, label_num):
+    device=input.device
+    c = torch.zeros(label_num, input.size(1)).to(device)
+    c = c.scatter_add_(dim=0, index=index.unsqueeze(1).expand(-1, input.size(1)), src=input)
+    class_counts = torch.bincount(index, minlength=label_num).unsqueeze(1).to(dtype=input.dtype, device=device)
+
+    # Take the average embeddings for each class
+    # If directly divided the variable 'c', maybe encountering zero values in 'class_counts', such as the class_counts=[[0.],[4.]]
+    # So we need to judge every value in 'class_counts' one by one, and seperately divided them.
+    # output_c = c/class_counts
+    for i in range(label_num):
+        if(class_counts[i].item()==0):
+            continue
+        else:
+            c[i] /= class_counts[i]
+
+    return c, class_counts
+
+
+def constraint(device,prompt):
+    if isinstance(prompt,list):
+        sum=0
+        for p in prompt:
+            sum=sum+torch.norm(torch.mm(p,p.T)-torch.eye(p.shape[0]).to(device))
+        return sum/len(prompt)
+    else:
+        return torch.norm(torch.mm(prompt,prompt.T)-torch.eye(prompt.shape[0]).to(device))
+
 
 def __seeds_list__(nodes):
     split_size = max(5, int(nodes.shape[0] / 400))

@@ -102,7 +102,7 @@ class Prostate_e2e(data.Dataset):
         self.slide_path = self.dataset_cfg['slide_path']
         self.csv_dir = self.dataset_cfg['label_dir'] + f'/fold{self.fold}.csv'
         self.slide_data = pd.read_csv(self.csv_dir, index_col=0)
-        if phase == 'train':
+        if phase in ['train', 'finetune']:
             self.patch_transform = transforms.Compose(augmentation_train)
         elif phase in ['valid', 'test']:
             self.patch_transform = transforms.Compose(augmentation_test)
@@ -117,7 +117,7 @@ class Prostate_e2e(data.Dataset):
             self.slide_id_2_paths[slide_id] = path
 
         # split the dataset
-        if phase == 'train':
+        if phase in ['train', 'finetune']:
             self.data = self.slide_data.loc[:, 'train'].dropna()
             self.label = self.slide_data.loc[:, 'train_label'].dropna()
 
@@ -261,7 +261,10 @@ class Prostate_e2e(data.Dataset):
         view_1 = np.array([view_1, coord_1])
         view_2 = np.array([view_2, coord_2])
 
-        return view_1, view_2
+        if self.phase == 'train':
+            return view_1, view_2
+        else:
+            return view_1, view_2, slide_label
 
 
 # def Train_dataset(cfg, phase='train'):
@@ -298,9 +301,9 @@ class Config:
         }
 
 
-def Prostate(num_parts=200):
+def Prostate(num_parts=200, phase='train'):
     cfg = Config()
-    Mydata = Prostate_e2e(cfg.Data, phase='train')
+    Mydata = Prostate_e2e(cfg.Data, phase=phase)
     # dataloader = DataLoader(Mydata)
 
     # for i, data in (enumerate(dataloader)):

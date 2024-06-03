@@ -285,7 +285,7 @@ class GNNClusterIDPredictor(nn.Module):
 
 # use gnn to learn the cluster id for pooling
 class SoftClusterGNN(torch.nn.Module):
-    def __init__(self, input_dim, hid_dim=None, out_dim=None, cluster_sizes=[100, 50, 10], pool=None, gnn_type='GAT'):
+    def __init__(self, input_dim, hid_dim=None, out_dim=None, cluster_sizes=[100, 50, 10], pool=None, gnn_type='GAT', phase='train'):
         super().__init__()
 
         if gnn_type == 'GCN':
@@ -299,6 +299,7 @@ class SoftClusterGNN(torch.nn.Module):
 
         self.cluster_sizes = cluster_sizes
         self.gnn_type = gnn_type
+        self.phase = phase
         self.conv_layers = torch.nn.ModuleList()
         self.cluster_id_predictor = torch.nn.ModuleList()
 
@@ -317,11 +318,20 @@ class SoftClusterGNN(torch.nn.Module):
             # input_dim, hid_dim = 2, 2
             self.cluster_id_predictor.append(GNNClusterIDPredictor(2, int(cluster_sizes[idx]/2), self.cluster_sizes[idx]))
 
-
         if pool is None:
             self.pool = global_mean_pool
         else:
             self.pool = pool
+
+        # freeze the params
+        if self.phase != 'train':
+            for predictor in self.cluster_id_predictor:
+                for p in predictor.parameters():
+                    p.requires_grad = False
+            for conv in self.conv_layers:
+                for p in conv.parameters():
+                    p.requires_grad = False
+
 
     def learn_cluster_ids(self, x, edge_index, batch, layer_idx):
         # 确保层索引在合理范围内
@@ -358,6 +368,7 @@ class SoftClusterGNN(torch.nn.Module):
 
     def forward(self, x, edge_index, batch, coord=None):
         cluster_results = [coord] # use the coord for cluster
+        vertex_features = [] # record the vertex features for each hierarchical layer
 
         for i, conv in enumerate(self.conv_layers[0:-1]):
             x = conv(x, edge_index.to(x.device))
@@ -374,10 +385,15 @@ class SoftClusterGNN(torch.nn.Module):
                 x, edge_index, batch, new_coords = self.cluster_and_pool(x, edge_index, batch, assignment_probs,
                                                                                  self.cluster_sizes[i], cluster_results[i])
                 cluster_results.append(new_coords)
+                vertex_features.append(x)
 
         node_emb = self.conv_layers[-1](x, edge_index.to(x.device))
         graph_emb = self.pool(node_emb, batch.long())
-        return graph_emb
+
+        if self.phase == 'train':
+            return graph_emb
+        else:
+            return graph_emb, vertex_features, cluster_results
 
     # use kmeans
     def cluster_and_pool(self, x, edge_index, batch, assignment_probs, cluster_size, coord):

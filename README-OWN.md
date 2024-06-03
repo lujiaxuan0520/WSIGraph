@@ -20,7 +20,7 @@ python pretrain.py --model GraphCL --gnn GCN --mode soft --dataset Prostate --en
   - --mode
     - original：无池化的普通GCN
     - hard：forward函数内调用kmeans，内存开销极大，目前训练多个epoch后会爆内存
-    - soft：模仿DiffPool，使用一个GNN来学习聚类的id
+    - soft(优先)：模仿DiffPool，使用一个GNN来学习聚类的id
 
 - 阿里云任务提交执行命令(Prostate)：单卡batch_size=3, num_workers=16/32；双卡batch_size=8, num_workers=32/64；4卡batch_size=16, num_workers=64/128
 
@@ -37,5 +37,14 @@ python pretrain.py --model GraphCL --gnn GCN --mode soft --dataset Prostate --en
 
 - 初始化图可视化：参考visualize_graph()
 
+
 ## 下游微调
 
+- 参数：
+  - --combine_mode
+    - graph_level：直接返回图级别的特征
+    - region_level：将区域特征进行平均
+    - hier_mean(优先)：将每一级特征进行平均，再平均
+ - --loss
+   - WeightedCrossEntropyLoss: 加权的单标签分类
+   - MultiLabelBCELoss：多标签分类

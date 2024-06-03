@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.autograd import Variable
+import torchmetrics
 from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 from random import shuffle
