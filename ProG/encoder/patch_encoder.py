@@ -5,7 +5,7 @@ import torch.nn as nn
 from ProG.encoder.resnet import resnet50_baseline, resnet18_baseline
 
 # for using PathoDuet
-sys.path.append('/mnt/data/smart_health_02/lujiaxuan/workingplace/GleasonGrade/code/PathoDuet')
+sys.path.append('/mnt/hwfile/smart_health/lujiaxuan/PathoDuet')
 from vits import VisionTransformerMoCo
 
 def PatchEncoder(encoder_name='Pathoduet', checkpoint_path=None):

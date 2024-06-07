@@ -438,7 +438,14 @@ class SoftClusterGNN(torch.nn.Module):
 
             # 移除自环和重复边
             new_edge_index_i, _ = torch_geometric.utils.remove_self_loops(new_edge_index_i)
-            new_edge_index_i, _ = torch_geometric.utils.coalesce(new_edge_index_i, None, cluster_size, cluster_size)
+            edge_result = torch_geometric.utils.coalesce(new_edge_index_i, None, cluster_size, cluster_size)
+            if isinstance(edge_result, tuple):
+                # some versions
+                new_edge_index_i, _ = edge_result
+            else:
+                # other versions
+                new_edge_index_i = edge_result
+            # new_edge_index_i, _ = torch_geometric.utils.coalesce(new_edge_index_i, None, cluster_size, cluster_size)
             # new_edge_index_list.append(new_edge_index_i + total_clusters)  # 调整索引基于总聚类数
             new_edge_index_list.append(new_edge_index_i + total_clusters)  # 调整索引基于总聚类数
 
