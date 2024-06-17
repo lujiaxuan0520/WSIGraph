@@ -17,7 +17,7 @@ from torch import optim
 from torch_geometric.loader import DataLoader
 
 
-dataset_clss_num ={'Prostate': 4}
+dataset_clss_num ={'Prostate': 4, 'JinYu': 21}
 
 def make_parse():
     parser = argparse.ArgumentParser()
@@ -33,6 +33,7 @@ def make_parse():
     parser.add_argument('--encoder_path', default=None, type=str)
     parser.add_argument('--checkpoint_suffix', default='', type=str) # the suffix of checkpoint name
     parser.add_argument('--loss', default='MultiLabelBCELoss', type=str)  # 'WeightedCrossEntropyLoss', 'MultiLabelBCELoss'
+    parser.add_argument('--gnn_ckpt', default='', type=str) # the pretrained gnn checkpoint for finetuning
 
     parser.add_argument('--batch_size', default=10, type=int)
     parser.add_argument('--learning_rate', default=0.01, type=float)
@@ -441,7 +442,7 @@ if __name__ == '__main__':
     print("create Downstream instance...")
     pt = Downstream(pretext, gnn_type, encoder, encoder_path, gln=args.layer, cluster_sizes=args.cluster_sizes,
                     mode=args.mode, num_workers=args.num_workers, combine_mode=args.combine_mode,
-                    class_num=dataset_clss_num[dataname], loss_name=args.loss)
+                    class_num=dataset_clss_num[dataname], loss_name=args.loss, gnn_ckpt=args.gnn_ckpt)
 
     print("fine-tuning...")
     pt.train(dataname, train_graph_list, test_graph_list, batch_size=batch_size, lr=args.learning_rate, decay=0.0001, epochs=100,

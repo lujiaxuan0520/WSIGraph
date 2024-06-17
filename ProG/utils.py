@@ -14,10 +14,11 @@ import torch.nn.functional as F
 from ProG.dataset.prostate_RJ import Prostate
 from ProG.dataset.CiteSeer import CiteSeer
 from ProG.dataset.TCGA import TCGA
+from ProG.dataset.JinYu import JinYu
 
 seed = 0
 
-datasets = {'CiteSeer': CiteSeer, 'Prostate': Prostate, 'TCGA': TCGA}
+datasets = {'CiteSeer': CiteSeer, 'Prostate': Prostate, 'TCGA': TCGA, 'JinYu': JinYu}
 
 
 def seed_everything(seed):

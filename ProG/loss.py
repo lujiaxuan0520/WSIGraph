@@ -47,7 +47,10 @@ class WeightedCrossEntropyLoss(nn.Module):
 
     def forward(self, logits, targets):
         device = logits.device
-        targets = torch.argmax(targets, dim=1) # change one-hot to label
+        # targets = torch.argmax(targets, dim=1) # change one-hot to label
+
+        if targets.dtype != torch.long:
+            targets = targets.long()
 
         return self.loss(logits, targets.to(device))
 

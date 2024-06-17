@@ -26,6 +26,7 @@ def make_parse():
     parser.add_argument('--encoder', default=None, type=str)  # 'Pathoduet', 'ResNet50', 'None'
     parser.add_argument('--encoder_path', default=None, type=str)
     parser.add_argument('--checkpoint_suffix', default='', type=str) # the suffix of checkpoint name
+    parser.add_argument('--resume_ckpt', default=None, type=str) # the checkpoint resume training
 
     parser.add_argument('--batch_size', default=10, type=int)
     parser.add_argument('--learning_rate', default=0.01, type=float)
@@ -116,7 +117,7 @@ if __name__ == '__main__':
 
     print("create PreTrain instance...")
     pt = PreTrain(pretext, gnn_type, encoder, encoder_path, gln=args.layer, cluster_sizes=args.cluster_sizes,
-                  mode=args.mode, num_workers=args.num_workers)
+                  mode=args.mode, num_workers=args.num_workers, resume_ckpt=args.resume_ckpt)
 
     print("pre-training...")
     pt.train(dataname, graph_list, batch_size=batch_size,

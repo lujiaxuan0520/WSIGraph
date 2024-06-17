@@ -3,10 +3,12 @@ import torch.nn as nn
 import torch.optim as optim
 from torch.autograd import Variable
 import torchmetrics
+from torchmetrics.classification import Recall, Precision, Specificity
 from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 from random import shuffle
 import random
+import math
 
 from ProG.prompt import GNN, ClusterGNN, SoftClusterGNN
 from ProG.gcn import GcnEncoderGraph
@@ -54,7 +56,7 @@ class PerClassAUROC(torchmetrics.AUROC):
         super().__init__(*args, **kwargs)
         self.name = "PerClassAUROC"
 
-class LP(torch.nn.Module):
+class FT(torch.nn.Module):
 
     def __init__(self, gnn, hid_dim=16, combine_mode='graph_level', class_num=10, loss_name='WeightedCrossEntropyLoss'):
         '''
@@ -65,18 +67,23 @@ class LP(torch.nn.Module):
             region_level: use only region level repr by mean;
             hier_mean: hierarchically combine graph, region and node level reprs by mean;
         '''
-        super(LP, self).__init__()
+        super(FT, self).__init__()
         self.combine_mode = combine_mode
         self.gnn = gnn
         self.loss_name = loss_name
         self.class_num = class_num
-        self.projection_head = torch.nn.Sequential(torch.nn.Linear(hid_dim, hid_dim),
-                                                   torch.nn.ReLU(inplace=True),
-                                                   torch.nn.Linear(hid_dim, hid_dim))
 
-        # freeze the gnn
-        for param in self.gnn.parameters():
-            param.requires_grad = False
+        if self.combine_mode == 'hier_weighted_mean':
+            self.weights = nn.Parameter(torch.ones(len(self.gnn.cluster_sizes), 1, hid_dim))
+            nn.init.kaiming_uniform_(self.weights, a=math.sqrt(5))
+        
+        # self.projection_head = torch.nn.Sequential(torch.nn.Linear(hid_dim, hid_dim),
+        #                                            torch.nn.ReLU(inplace=True),
+        #                                            torch.nn.Linear(hid_dim, hid_dim))
+
+        # # freeze the gnn
+        # for param in self.gnn.parameters():
+        #     param.requires_grad = False
 
         # cls head
         self.cls_head = torch.nn.Sequential(torch.nn.Linear(hid_dim, hid_dim),
@@ -91,7 +98,7 @@ class LP(torch.nn.Module):
                 nn.init.constant_(m.bias, 0)
 
 
-    def forward_lp(self, x, edge_index, batch, coord=None):
+    def forward_ft(self, x, edge_index, batch, coord=None):
         x, vertex_features, cluster_results = self.gnn(x, edge_index, batch, coord)
         # x = self.projection_head(x)
 
@@ -106,6 +113,23 @@ class LP(torch.nn.Module):
                     sample_features = features[i * n:(i + 1) * n]
                     layer_mean = torch.mean(sample_features, dim=0, keepdim=True).to(x.device)
                     sample_feature_sum += layer_mean
+
+                sample_average = sample_feature_sum / len(vertex_features)
+                sample_averages.append(sample_average)
+
+            x = torch.cat(sample_averages, dim=0)
+        elif self.combine_mode == 'hier_weighted_mean':
+            sample_averages = []
+            batch_size = batch.max().item() + 1
+            for i in range(batch_size):
+                sample_feature_sum = torch.zeros(1, vertex_features[0].shape[-1]).to(x.device)
+
+                for idx, features in enumerate(vertex_features):
+                    n = features.shape[0] // batch_size
+                    sample_features = features[i * n:(i + 1) * n]
+                    layer_mean = torch.mean(sample_features, dim=0, keepdim=True).to(x.device)
+                    weighted_mean = layer_mean * self.weights[idx]
+                    sample_feature_sum += weighted_mean
 
                 sample_average = sample_feature_sum / len(vertex_features)
                 sample_averages.append(sample_average)
@@ -130,14 +154,14 @@ class LP(torch.nn.Module):
         return x
 
 
-    def loss_cl(self, x, labels):
+    def loss_ft(self, x, labels):
         # return nn.CrossEntropyLoss()(x, labels)
         return SlideOnlyCriterion(device='cuda', loss_name=self.loss_name)(x, labels)
 
 class Downstream(torch.nn.Module):
     def __init__(self, pretext="GraphCL", gnn_type='GCN', encoder='Pathoduet', encoder_path=None,
                  gln=2, cluster_sizes=[100, 50, 10], num_workers=1, mode='original', combine_mode='graph_level', class_num=10,
-                 loss_name='WeightedCrossEntropyLoss'):
+                 loss_name='WeightedCrossEntropyLoss', gnn_ckpt=None):
         super(Downstream, self).__init__()
         self.pretext = pretext
         self.gnn_type = gnn_type
@@ -176,8 +200,11 @@ class Downstream(torch.nn.Module):
         #     self.enc.eval()
         # # self.gnn.to(device)
 
+        self.gnn.load_state_dict(torch.load(gnn_ckpt))
+        print("successfully load pre-trained weights for gnn! @ {}".format(gnn_ckpt))
+
         if pretext in ['GraphCL', 'SimGRACE']:
-            self.model = LP(self.gnn, hid_dim=hid_dim, combine_mode=combine_mode, class_num=class_num, loss_name=self.loss_name)
+            self.model = FT(self.gnn, hid_dim=hid_dim, combine_mode=combine_mode, class_num=class_num, loss_name=self.loss_name)
             # self.model.to(device)
         else:
             raise ValueError("pretext should be GraphCL, SimGRACE")
@@ -203,7 +230,7 @@ class Downstream(torch.nn.Module):
                 shuffle(graph_list)
 
 
-            if dataname in ['Prostate', 'TCGA']:
+            if dataname in ['Prostate', 'TCGA', 'JinYu']:
                 loader = DataLoader(graph_list, batch_size=batch_size, shuffle=False,
                                      num_workers=self.num_workers)  # you must set shuffle=False !
                 loader.collate_fn = collate_fn
@@ -281,20 +308,37 @@ class Downstream(torch.nn.Module):
         # torch metric
         # metrics = torchmetrics.MetricCollection([torchmetrics.AUROC(
         #     num_classes=self.cfg.Model.num_classes, average='macro')]) # average AUROC
-        metrics = torchmetrics.MetricCollection([
-            # AUC
-            AverageAUROC(num_classes=self.class_num, average='macro'),
-            PerClassAUROC(num_classes=self.class_num, average=None),
-            # F1 Score
-            torchmetrics.F1(num_classes=self.class_num, average='macro'),
-            # Accuracy
-            torchmetrics.Accuracy()
-        ])
+        try:
+            metrics = torchmetrics.MetricCollection([
+                # AUC
+                AverageAUROC(num_classes=self.class_num, average='macro'),
+                PerClassAUROC(num_classes=self.class_num, average=None),
+                # F1 Score
+                torchmetrics.F1(num_classes=self.class_num, average='macro'),
+                # Accuracy
+                torchmetrics.Accuracy(),
+                Recall(num_classes=self.class_num, average='macro'),
+                Precision(num_classes=self.class_num, average='macro'),
+                Specificity(num_classes=self.class_num, average='macro')
+            ])
+        except Exception:
+            metrics = torchmetrics.MetricCollection([
+                # AUC
+                AverageAUROC(num_classes=self.class_num, average='macro'),
+                PerClassAUROC(num_classes=self.class_num, average=None),
+                # F1 Score
+                torchmetrics.F1Score(num_classes=self.class_num, average='macro'),
+                # Accuracy
+                torchmetrics.Accuracy(),
+                Recall(num_classes=self.class_num, average='macro'),
+                Precision(num_classes=self.class_num, average='macro'),
+                Specificity(num_classes=self.class_num, average='macro')
+            ])
         self.valid_metrics = metrics.clone(prefix='val_')
         self.test_metrics = metrics.clone(prefix='test_')
 
 
-    def train_downstream_lp(self, model, loader1, loader2, optimizer):
+    def train_downstream_ft(self, model, loader1, loader2, optimizer):
         model.train()
         train_loss_accum = 0
         total_step = 0
@@ -312,9 +356,9 @@ class Downstream(torch.nn.Module):
                 elif self.encoder in ['ResNet50', 'ResNet18']:
                     batch.x = self.enc(batch.x)
 
-            x = model.module.forward_lp(batch.x, batch.edge_index, batch.batch, coord)
+            x = model.module.forward_ft(batch.x, batch.edge_index, batch.batch, coord)
             # x2 = model.module.forward_cl(batch2.x, batch2.edge_index, batch2.batch, coord_2)
-            loss = model.module.loss_cl(x, labels)
+            loss = model.module.loss_ft(x, labels)
 
             loss.backward()
             optimizer.step()
@@ -346,13 +390,18 @@ class Downstream(torch.nn.Module):
                         batch.x = self.enc(batch.x)
 
                 # Forward pass
-                x = self.model.module.forward_lp(batch.x, batch.edge_index, batch.batch, coord)
+                x = self.model.module.forward_ft(batch.x, batch.edge_index, batch.batch, coord)
+
+                if labels.dtype != torch.long:
+                    labels = labels.long()
 
                 # Compute loss
-                loss = self.model.module.loss_cl(x, labels)
+                labels = labels.to(x.device)
+                loss = self.model.module.loss_ft(x, labels)
                 test_loss_accum += loss[0].item()
 
                 # Update metrics
+                self.test_metrics.to(labels.device)
                 self.test_metrics.update(x.to(labels.device), labels)
                 total_step += 1
 
@@ -370,6 +419,7 @@ class Downstream(torch.nn.Module):
               decay=0.0001, epochs=100, checkpoint_suffix='', save_epoch=True):
 
         train_loader, _ = self.get_loader(train_graph_list, batch_size, pretext=self.pretext, dataname=dataname)
+        # val_loader, _ = self.get_loader(val_graph_list, batch_size, pretext=self.pretext, dataname=dataname)
         test_loader, _ = self.get_loader(test_graph_list, batch_size, pretext=self.pretext, dataname=dataname)
         # print('start training {} | {} | {}...'.format(dataname, pre_train_method, gnn_type))
         # optimizer = optim.Adam(self.model.parameters(), lr=lr, weight_decay=decay)
@@ -378,18 +428,13 @@ class Downstream(torch.nn.Module):
         checkpoint_dict = dict()
         train_loss_min = 1000000
         for epoch in range(1, epochs + 1):  # 1..100
-
-
-            # tmp
-            test_metrics = self.test_model(self.model, test_loader)
-
             # if self.pretext == 'GraphCL':
-            #     train_loss = self.train_downstream_lp(self.model, loader, _, optimizer)
+            #     train_loss = self.train_downstream_ft(self.model, loader, _, optimizer)
             # elif self.pretext == 'SimGRACE':
             #     train_loss = self.train_simgrace(self.model, loader, optimizer)
             # else:
             #     raise ValueError("pretext should be GraphCL, SimGRACE")
-            train_loss = self.train_downstream_lp(self.model, train_loader, _, optimizer)
+            train_loss = self.train_downstream_ft(self.model, train_loader, _, optimizer)
 
             print("***epoch: {}/{} | train_loss: {:.8}".format(epoch, epochs, train_loss))
 

@@ -324,7 +324,9 @@ class SoftClusterGNN(torch.nn.Module):
             self.pool = pool
 
         # freeze the params
-        if self.phase != 'train':
+        if self.phase in ['train', 'finetune']:
+            pass
+        else:
             for predictor in self.cluster_id_predictor:
                 for p in predictor.parameters():
                     p.requires_grad = False

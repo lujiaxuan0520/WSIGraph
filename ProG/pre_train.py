@@ -45,7 +45,7 @@ class GraphCL(torch.nn.Module):
 
 class PreTrain(torch.nn.Module):
     def __init__(self, pretext="GraphCL", gnn_type='GCN', encoder='Pathoduet', encoder_path=None,
-                 gln=2, cluster_sizes=[100, 50, 10], num_workers=1, mode='original'):
+                 gln=2, cluster_sizes=[100, 50, 10], num_workers=1, mode='original', resume_ckpt=None):
         super(PreTrain, self).__init__()
         self.pretext = pretext
         self.gnn_type = gnn_type
@@ -79,6 +79,10 @@ class PreTrain(torch.nn.Module):
         #     # self.enc.to(device)
         #     self.enc.eval()
         # # self.gnn.to(device)
+
+        if resume_ckpt is not None:
+            self.gnn.load_state_dict(torch.load(resume_ckpt))
+            print("successfully load pre-trained weights for gnn! @ {}".format(resume_ckpt))
 
         if pretext in ['GraphCL', 'SimGRACE']:
             self.model = GraphCL(self.gnn, hid_dim=hid_dim)
