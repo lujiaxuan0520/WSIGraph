@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import torch.nn.functional as F
 from torch.autograd import Variable
 import torchmetrics
 from torchmetrics.classification import Recall, Precision, Specificity
@@ -45,6 +46,8 @@ from ProG.loss import SlideOnlyCriterion
 #         loss = - torch.log(loss).mean() + 10
 #         return loss
 
+def count_parameters(model):
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 class AverageAUROC(torchmetrics.AUROC):
     def __init__(self, *args, **kwargs):
@@ -73,6 +76,9 @@ class FT(torch.nn.Module):
         self.loss_name = loss_name
         self.class_num = class_num
 
+        self.layer_norm = nn.LayerNorm(normalized_shape=hid_dim)
+
+
         if self.combine_mode == 'hier_weighted_mean':
             self.weights = nn.Parameter(torch.ones(len(self.gnn.cluster_sizes), 1, hid_dim))
             nn.init.kaiming_uniform_(self.weights, a=math.sqrt(5))
@@ -86,9 +92,13 @@ class FT(torch.nn.Module):
         #     param.requires_grad = False
 
         # cls head
-        self.cls_head = torch.nn.Sequential(torch.nn.Linear(hid_dim, hid_dim),
-                                            torch.nn.ReLU(inplace=True),
-                                            torch.nn.Linear(hid_dim, class_num),
+        # self.cls_head = torch.nn.Sequential(torch.nn.Linear(hid_dim, hid_dim),
+        #                                     torch.nn.ReLU(inplace=True),
+        #                                     torch.nn.Linear(hid_dim, class_num),
+        #                                     # torch.nn.LayerNorm(class_num)
+        #                                     torch.nn.BatchNorm1d(class_num)
+        #                                     )
+        self.cls_head = torch.nn.Sequential(torch.nn.Linear(hid_dim, class_num),
                                             # torch.nn.LayerNorm(class_num)
                                             torch.nn.BatchNorm1d(class_num)
                                             )
@@ -112,6 +122,7 @@ class FT(torch.nn.Module):
                     n = features.shape[0] // batch_size
                     sample_features = features[i * n:(i + 1) * n]
                     layer_mean = torch.mean(sample_features, dim=0, keepdim=True).to(x.device)
+                    layer_mean = self.layer_norm(layer_mean)
                     sample_feature_sum += layer_mean
 
                 sample_average = sample_feature_sum / len(vertex_features)
@@ -128,6 +139,7 @@ class FT(torch.nn.Module):
                     n = features.shape[0] // batch_size
                     sample_features = features[i * n:(i + 1) * n]
                     layer_mean = torch.mean(sample_features, dim=0, keepdim=True).to(x.device)
+                    layer_mean = self.layer_norm(layer_mean)
                     weighted_mean = layer_mean * self.weights[idx]
                     sample_feature_sum += weighted_mean
 
@@ -232,7 +244,7 @@ class Downstream(torch.nn.Module):
 
             if dataname in ['Prostate', 'TCGA', 'JinYu']:
                 loader = DataLoader(graph_list, batch_size=batch_size, shuffle=False,
-                                     num_workers=self.num_workers)  # you must set shuffle=False !
+                                     num_workers=self.num_workers, drop_last=True)  # you must set shuffle=False !
                 loader.collate_fn = collate_fn
                 return loader, None
             else:
@@ -252,7 +264,7 @@ class Downstream(torch.nn.Module):
                     view_list.append(view_g)
 
                 loader = DataLoader(view_list, batch_size=batch_size, shuffle=False,
-                                     num_workers=self.num_workers)  # you must set shuffle=False !
+                                     num_workers=self.num_workers, drop_last=True)  # you must set shuffle=False !
 
                 return loader, None
         elif pretext == 'SimGRACE':
@@ -342,6 +354,7 @@ class Downstream(torch.nn.Module):
         model.train()
         train_loss_accum = 0
         total_step = 0
+        # for step, batch in enumerate(loader1):
         for step, batch in enumerate(zip(loader1)):
             # batch1, batch2 = batch[0]
             batch, _, coord, _, labels = batch[0]
@@ -356,9 +369,12 @@ class Downstream(torch.nn.Module):
                 elif self.encoder in ['ResNet50', 'ResNet18']:
                     batch.x = self.enc(batch.x)
 
+            if labels.dtype != torch.long:
+                labels = labels.long()
+
             x = model.module.forward_ft(batch.x, batch.edge_index, batch.batch, coord)
-            # x2 = model.module.forward_cl(batch2.x, batch2.edge_index, batch2.batch, coord_2)
-            loss = model.module.loss_ft(x, labels)
+
+            loss = model.module.loss_ft(x, labels)[0]
 
             loss.backward()
             optimizer.step()

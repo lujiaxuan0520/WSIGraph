@@ -1,6 +1,7 @@
 import torch
 from torch import nn
 from typing import Optional, List
+import torch.nn.functional as F
 
 
 class MultiLabelBCELoss(nn.Module):
@@ -29,6 +30,22 @@ class MultiLabelBCELoss(nn.Module):
             logits = logits.unsqueeze(0)
         elif logits.ndim > targets.ndim:
             targets = targets.squeeze(1)
+            # if targets.ndim > 1:
+            #     targets = targets.squeeze(1)
+            # else:
+            #     targets = targets.squeeze()
+
+        # while logits.ndim > targets.ndim:
+        #     targets = targets.unsqueeze(-1)
+        # while targets.ndim > logits.ndim:
+        #     logits = logits.unsqueeze(0)
+
+        # num_classes = logits.size(1)
+        # targets = F.one_hot(targets, num_classes=num_classes).to(torch.float32)
+        # print("logits", logits)
+        # print("targets:", targets)
+        # assert logits.shape == targets.shape, "Logits and targets must have the same shape"
+
 
         if self.weight is None:
             # return self.bce(input=logits, target=targets.to(torch.float32))

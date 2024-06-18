@@ -4888,3 +4888,969 @@ Traceback (most recent call last):
   File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
     from petrel_client.cache.mc.petrel_pymc import McClient
 ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+***epoch: 12/100 | train_loss: 2.1445298
++++model saved ! TCGA.GraphCL.GCN.pth
+2024-06-17 23:58:39,606 WAR [Process-395] [MainThread] - can not init cache client [P:197136 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,606 WAR [Process-411] [MainThread] - can not init cache client [P:201247 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 WAR [Process-408] [MainThread] - can not init cache client [P:200478 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 WAR [Process-410] [MainThread] - can not init cache client [P:200991 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 WAR [Process-406] [MainThread] - can not init cache client [P:199963 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 WAR [Process-409] [MainThread] - can not init cache client [P:200734 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 WAR [Process-391] [MainThread] - can not init cache client [P:196089 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 WAR [Process-403] [MainThread] - can not init cache client [P:199192 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 WAR [Process-397] [MainThread] - can not init cache client [P:197649 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 WAR [Process-385] [MainThread] - can not init cache client [P:194535 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 WAR [Process-386] [MainThread] - can not init cache client [P:194804 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 WAR [Process-399] [MainThread] - can not init cache client [P:198165 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 WAR [Process-398] [MainThread] - can not init cache client [P:197907 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 WAR [Process-412] [MainThread] - can not init cache client [P:201506 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 WAR [Process-394] [MainThread] - can not init cache client [P:196877 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 WAR [Process-414] [MainThread] - can not init cache client [P:202028 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 WAR [Process-387] [MainThread] - can not init cache client [P:195062 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 ERR [Process-395] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:197136 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,607 WAR [Process-388] [MainThread] - can not init cache client [P:195318 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 WAR [Process-413] [MainThread] - can not init cache client [P:201764 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 WAR [Process-392] [MainThread] - can not init cache client [P:196347 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 WAR [Process-390] [MainThread] - can not init cache client [P:195831 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 WAR [Process-401] [MainThread] - can not init cache client [P:198677 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 WAR [Process-407] [MainThread] - can not init cache client [P:200221 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,607 ERR [Process-411] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:201247 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,607 ERR [Process-408] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:200478 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,608 ERR [Process-391] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:196089 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,607 ERR [Process-410] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:200991 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,608 ERR [Process-409] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:200734 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,608 ERR [Process-406] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:199963 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,608 WAR [Process-405] [MainThread] - can not init cache client [P:199705 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 ERR [Process-397] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:197649 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,608 ERR [Process-403] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:199192 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,608 WAR [Process-402] [MainThread] - can not init cache client [P:198934 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 WAR [Process-416] [MainThread] - can not init cache client [P:202636 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 WAR [Process-415] [MainThread] - can not init cache client [P:202286 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 WAR [Process-404] [MainThread] - can not init cache client [P:199448 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 WAR [Process-396] [MainThread] - can not init cache client [P:197392 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 ERR [Process-385] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:194535 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,609 WAR [Process-389] [MainThread] - can not init cache client [P:195574 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 ERR [Process-399] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:198165 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,608 ERR [Process-386] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:194804 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,610 WAR [Process-393] [MainThread] - can not init cache client [P:196614 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,608 ERR [Process-398] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:197907 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,609 ERR [Process-401] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:198677 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,610 ERR [Process-404] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:199448 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,609 ERR [Process-387] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:195062 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,609 ERR [Process-402] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:198934 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,610 ERR [Process-416] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:202636 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,609 ERR [Process-405] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:199705 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,609 ERR [Process-414] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:202028 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,609 ERR [Process-412] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:201506 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,610 ERR [Process-415] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:202286 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,609 ERR [Process-407] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:200221 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,612 WAR [Process-400] [MainThread] - can not init cache client [P:198421 T:140425841919808 F:cache.py:48]
+2024-06-17 23:58:39,609 ERR [Process-390] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:195831 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,610 ERR [Process-389] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:195574 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,610 ERR [Process-393] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:196614 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,610 ERR [Process-396] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:197392 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,609 ERR [Process-392] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:196347 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,609 ERR [Process-388] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:195318 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,609 ERR [Process-394] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:196877 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,609 ERR [Process-413] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:201764 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-17 23:58:39,612 ERR [Process-400] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:198421 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+***epoch: 13/100 | train_loss: 2.1179218
++++model saved ! TCGA.GraphCL.GCN.pth
+2024-06-18 07:20:33,501 WAR [Process-445] [MainThread] - can not init cache client [P:392111 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-440] [MainThread] - can not init cache client [P:390830 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-435] [MainThread] - can not init cache client [P:389550 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-442] [MainThread] - can not init cache client [P:391343 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-433] [MainThread] - can not init cache client [P:389038 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-434] [MainThread] - can not init cache client [P:389294 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-431] [MainThread] - can not init cache client [P:388525 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-422] [MainThread] - can not init cache client [P:386075 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-432] [MainThread] - can not init cache client [P:388781 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-427] [MainThread] - can not init cache client [P:387473 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-426] [MainThread] - can not init cache client [P:387215 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-425] [MainThread] - can not init cache client [P:386946 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 ERR [Process-445] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:392111 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,501 ERR [Process-435] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:389550 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,501 ERR [Process-440] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:390830 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,502 WAR [Process-419] [MainThread] - can not init cache client [P:385299 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-444] [MainThread] - can not init cache client [P:391855 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,500 WAR [Process-441] [MainThread] - can not init cache client [P:391087 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-437] [MainThread] - can not init cache client [P:390062 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,502 WAR [Process-420] [MainThread] - can not init cache client [P:385556 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,500 WAR [Process-424] [MainThread] - can not init cache client [P:386674 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,502 WAR [Process-430] [MainThread] - can not init cache client [P:388264 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,502 WAR [Process-418] [MainThread] - can not init cache client [P:385040 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,502 WAR [Process-446] [MainThread] - can not init cache client [P:392371 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-443] [MainThread] - can not init cache client [P:391599 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 ERR [Process-442] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:391343 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,502 WAR [Process-417] [MainThread] - can not init cache client [P:384780 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-447] [MainThread] - can not init cache client [P:392627 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,502 WAR [Process-423] [MainThread] - can not init cache client [P:386331 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-428] [MainThread] - can not init cache client [P:387737 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-429] [MainThread] - can not init cache client [P:387993 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,502 WAR [Process-439] [MainThread] - can not init cache client [P:390574 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-436] [MainThread] - can not init cache client [P:389806 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,502 WAR [Process-421] [MainThread] - can not init cache client [P:385812 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,501 WAR [Process-438] [MainThread] - can not init cache client [P:390318 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,502 ERR [Process-434] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:389294 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,502 ERR [Process-433] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:389038 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,502 ERR [Process-431] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:388525 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,502 ERR [Process-422] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:386075 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,502 ERR [Process-432] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:388781 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,502 ERR [Process-427] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:387473 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,502 ERR [Process-426] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:387215 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,502 ERR [Process-419] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:385299 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,502 ERR [Process-425] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:386946 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,502 ERR [Process-444] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:391855 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-441] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:391087 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-437] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:390062 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-420] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:385556 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-424] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:386674 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,505 WAR [Process-448] [MainThread] - can not init cache client [P:392888 T:140425841919808 F:cache.py:48]
+2024-06-18 07:20:33,503 ERR [Process-430] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:388264 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-418] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:385040 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-446] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:392371 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-443] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:391599 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-417] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:384780 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,505 ERR [Process-448] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:392888 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-447] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:392627 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-423] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:386331 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-428] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:387737 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-429] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:387993 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-439] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:390574 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-436] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:389806 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-438] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:390318 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 07:20:33,503 ERR [Process-421] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:385812 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+***epoch: 14/100 | train_loss: 2.091987
++++model saved ! TCGA.GraphCL.GCN.pth
+2024-06-18 12:53:50,227 WAR [Process-480] [MainThread] - can not init cache client [P:481670 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,228 ERR [Process-480] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:481670 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,228 WAR [Process-453] [MainThread] - can not init cache client [P:474390 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,229 WAR [Process-469] [MainThread] - can not init cache client [P:478537 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,229 WAR [Process-476] [MainThread] - can not init cache client [P:480377 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,229 ERR [Process-453] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:474390 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,229 WAR [Process-474] [MainThread] - can not init cache client [P:479826 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,229 ERR [Process-469] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:478537 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,229 ERR [Process-476] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:480377 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,229 WAR [Process-465] [MainThread] - can not init cache client [P:477506 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,230 ERR [Process-474] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:479826 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,231 WAR [Process-452] [MainThread] - can not init cache client [P:474133 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-450] [MainThread] - can not init cache client [P:473621 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-470] [MainThread] - can not init cache client [P:478794 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 ERR [Process-465] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:477506 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,229 WAR [Process-472] [MainThread] - can not init cache client [P:479308 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,229 WAR [Process-461] [MainThread] - can not init cache client [P:476470 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-449] [MainThread] - can not init cache client [P:473365 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-479] [MainThread] - can not init cache client [P:481412 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-462] [MainThread] - can not init cache client [P:476726 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-473] [MainThread] - can not init cache client [P:479570 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-460] [MainThread] - can not init cache client [P:476210 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-477] [MainThread] - can not init cache client [P:480888 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-468] [MainThread] - can not init cache client [P:478276 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-475] [MainThread] - can not init cache client [P:480086 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-456] [MainThread] - can not init cache client [P:475185 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-466] [MainThread] - can not init cache client [P:477762 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-467] [MainThread] - can not init cache client [P:478020 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-464] [MainThread] - can not init cache client [P:477249 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,231 WAR [Process-478] [MainThread] - can not init cache client [P:481146 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,232 WAR [Process-471] [MainThread] - can not init cache client [P:479051 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,232 ERR [Process-470] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:478794 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,232 ERR [Process-452] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:474133 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,232 WAR [Process-451] [MainThread] - can not init cache client [P:473877 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,232 WAR [Process-457] [MainThread] - can not init cache client [P:475441 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,233 WAR [Process-459] [MainThread] - can not init cache client [P:475954 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,232 ERR [Process-450] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:473621 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,232 WAR [Process-454] [MainThread] - can not init cache client [P:474649 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,232 ERR [Process-472] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:479308 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,232 ERR [Process-460] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:476210 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,233 ERR [Process-456] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:475185 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,232 ERR [Process-461] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:476470 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,233 ERR [Process-464] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:477249 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,232 ERR [Process-449] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:473365 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,233 WAR [Process-463] [MainThread] - can not init cache client [P:476982 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,232 ERR [Process-473] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:479570 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,232 ERR [Process-479] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:481412 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,232 ERR [Process-477] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:480888 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,233 ERR [Process-475] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:480086 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,232 ERR [Process-462] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:476726 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,233 ERR [Process-451] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:473877 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,233 ERR [Process-467] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:478020 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,232 ERR [Process-468] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:478276 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,233 ERR [Process-466] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:477762 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,233 ERR [Process-471] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:479051 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,233 ERR [Process-478] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:481146 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,233 ERR [Process-454] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:474649 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,233 ERR [Process-457] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:475441 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,233 ERR [Process-459] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:475954 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,235 ERR [Process-463] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:476982 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,244 WAR [Process-455] [MainThread] - can not init cache client [P:474910 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,246 WAR [Process-458] [MainThread] - can not init cache client [P:475697 T:140425841919808 F:cache.py:48]
+2024-06-18 12:53:50,245 ERR [Process-455] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:474910 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+2024-06-18 12:53:50,246 ERR [Process-458] [MainThread] - libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory [P:475697 T:140425841919808 F:cache.py:49]
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 42, in create
+    engine_cls = Cache.get_engine_cls(engine_type)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/cache.py", line 28, in get_engine_cls
+    __import__(module_name)
+  File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
+    from petrel_client.cache.mc.petrel_pymc import McClient
+ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
