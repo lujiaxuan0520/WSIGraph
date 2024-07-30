@@ -11,12 +11,17 @@ from random import shuffle
 import random
 import math
 
+import sys
+sys.path.append('/mnt/hwfile/smart_health/lujiaxuan/prov-gigapath')
+from gigapath.slide_encoder import create_model
+
 from ProG.prompt import GNN, ClusterGNN, SoftClusterGNN
 from ProG.gcn import GcnEncoderGraph
 from ProG.encoder.patch_encoder import PatchEncoder
 from ProG.utils import gen_ran_output,load_data4pretrain,mkdir,collate_fn,get_model
 from ProG.graph import graph_views, graph_views_ori
 from ProG.loss import SlideOnlyCriterion
+from ProG.abmil import AttnMIL6, Classifier_1fc
 
 # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -61,7 +66,8 @@ class PerClassAUROC(torchmetrics.AUROC):
 
 class FT(torch.nn.Module):
 
-    def __init__(self, gnn, hid_dim=16, combine_mode='graph_level', class_num=10, loss_name='WeightedCrossEntropyLoss'):
+    def __init__(self, gnn, hid_dim=16, combine_mode='graph_level', post_mode=None,
+        class_num=10, loss_name='WeightedCrossEntropyLoss'):
         '''
         :param gnn:
         :param hid_dim:
@@ -72,6 +78,7 @@ class FT(torch.nn.Module):
         '''
         super(FT, self).__init__()
         self.combine_mode = combine_mode
+        self.post_mode = post_mode
         self.gnn = gnn
         self.loss_name = loss_name
         self.class_num = class_num
@@ -87,9 +94,10 @@ class FT(torch.nn.Module):
         #                                            torch.nn.ReLU(inplace=True),
         #                                            torch.nn.Linear(hid_dim, hid_dim))
 
-        # # freeze the gnn
-        # for param in self.gnn.parameters():
-        #     param.requires_grad = False
+        if self.post_mode in ['linear_probing', 'abmil']:
+            # freeze the gnn
+            for param in self.gnn.parameters():
+                param.requires_grad = False
 
         # cls head
         # self.cls_head = torch.nn.Sequential(torch.nn.Linear(hid_dim, hid_dim),
@@ -98,23 +106,88 @@ class FT(torch.nn.Module):
         #                                     # torch.nn.LayerNorm(class_num)
         #                                     torch.nn.BatchNorm1d(class_num)
         #                                     )
-        self.cls_head = torch.nn.Sequential(torch.nn.Linear(hid_dim, class_num),
-                                            # torch.nn.LayerNorm(class_num)
-                                            torch.nn.BatchNorm1d(class_num)
-                                            )
-        for m in self.cls_head:
-            if isinstance(m, nn.Linear):
-                nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
-                nn.init.constant_(m.bias, 0)
+
+        if self.post_mode == 'abmil':
+            class Config:
+                D_feat = hid_dim  # Number of features in the input instances
+                D_inner = 128  # Reduced feature dimension
+                n_token = 1    # Number of attention branches (or tokens)
+                n_class = class_num    # Number of classes for classification
+                n_masked_patch = 0  # Number of masked patches, set to 0 if not used
+                mask_drop = 0.5  # Proportion of masks to drop if n_masked_patch > 0
+            conf = Config()
+            self.abmil = AttnMIL6(conf)
+            for m in self.abmil.modules():
+                if isinstance(m, nn.Linear):
+                    nn.init.kaiming_normal_(m.weight, mode='fan_in', nonlinearity='relu')
+                    if m.bias is not None:
+                        nn.init.constant_(m.bias, 0)
+
+            self.cls_head = Classifier_1fc(128, class_num, 0.5)
+            for m in self.cls_head.modules():
+                if isinstance(m, nn.Linear):
+                    nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                    nn.init.constant_(m.bias, 0)
+        else:
+            self.cls_head = torch.nn.Sequential(torch.nn.Linear(hid_dim, class_num),
+                                                # torch.nn.LayerNorm(class_num)
+                                                torch.nn.BatchNorm1d(class_num)
+                                                )
+            for m in self.cls_head:
+                if isinstance(m, nn.Linear):
+                    nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
+                    nn.init.constant_(m.bias, 0)
 
 
     def forward_ft(self, x, edge_index, batch, coord=None):
+        batch_size = batch.max().item() + 1
+        abmil = True if self.combine_mode == 'abmil' else False
+        
+        if self.combine_mode == 'linear_probing':
+            sample_x = []
+            for i in range(batch_size):
+                batch_elements = x[batch == i]
+                if batch_elements.size(0) > 0:
+                    x_mean = torch.mean(batch_elements, dim=0)
+                    sample_x.append(x_mean)
+            sample_x = torch.stack(sample_x)
+            return self.cls_head(sample_x)
+
+        # for GigaPath-Slide encoder
+        if hasattr(self.gnn, 'encoder_name') and 'LongNet' in self.gnn.encoder_name:
+            unique_batches = torch.unique(batch)
+            all_embeddings = []
+            # all_preds = []
+
+            self.gnn.eval()
+            with torch.no_grad():
+                with torch.cuda.amp.autocast(dtype=torch.float16):
+                    coord = coord.to(x.device)
+                    for b in unique_batches:
+                        mask = (batch == b)
+                        tile_embed = x[mask].unsqueeze(0)
+                        coords = coord[mask].unsqueeze(0)
+                        
+                        if abmil:
+                            output, features = self.gnn(tile_embed, coords, abmil=True)
+                            # class_output, slide_output, attention_weights = self.cls_head(features[0])
+                            output = self.abmil(features[0])
+                            # all_preds.append(class_output)
+                            all_embeddings.append(output)
+                        else:
+                            output = self.gnn(tile_embed, coords)
+                            all_embeddings.append(output[0])
+
+            final_embedding = torch.cat(all_embeddings, dim=0)
+            output = self.cls_head(final_embedding.float())
+            return output
+        
+
         x, vertex_features, cluster_results = self.gnn(x, edge_index, batch, coord)
         # x = self.projection_head(x)
 
         if self.combine_mode == 'hier_mean':
             sample_averages = []
-            batch_size = batch.max().item() + 1
             for i in range(batch_size):
                 sample_feature_sum = torch.zeros(1, vertex_features[0].shape[-1]).to(x.device)
 
@@ -159,6 +232,17 @@ class FT(torch.nn.Module):
             x = torch.cat(sample_averages, dim=0)
         elif self.combine_mode == 'graph_level':
             pass
+        elif self.combine_mode == 'abmil':
+            sample_averages = []
+            batch_size = batch.max().item() + 1
+            layer = -1 # only use the last hierarchical layer
+            for i in range(batch_size):
+                n = vertex_features[layer].shape[0] // batch_size
+                sample_features = vertex_features[layer][i * n:(i + 1) * n]
+                output = self.abmil(sample_features.unsqueeze(0))
+                # all_preds.append(class_output)
+                sample_averages.append(output)
+            x = torch.cat(sample_averages, dim=0)
 
         # cls head
         x = self.cls_head(x)
@@ -172,8 +256,8 @@ class FT(torch.nn.Module):
 
 class Downstream(torch.nn.Module):
     def __init__(self, pretext="GraphCL", gnn_type='GCN', encoder='Pathoduet', encoder_path=None,
-                 gln=2, cluster_sizes=[100, 50, 10], num_workers=1, mode='original', combine_mode='graph_level', class_num=10,
-                 loss_name='WeightedCrossEntropyLoss', gnn_ckpt=None):
+                 gln=2, cluster_sizes=[100, 50, 10], num_workers=1, mode='original', combine_mode='graph_level', post_mode=None, 
+                 class_num=10, loss_name='WeightedCrossEntropyLoss', gnn_ckpt=None):
         super(Downstream, self).__init__()
         self.pretext = pretext
         self.gnn_type = gnn_type
@@ -189,6 +273,9 @@ class Downstream(torch.nn.Module):
         # pass: get the input_dim and hid_dim for each encoder
         if encoder=='Pathoduet':
             input_dim, hid_dim = 768, 768
+        elif encoder=='GigaPath':
+            # input_dim, hid_dim = 1536, 1536
+            input_dim, hid_dim = 768, 768
         elif encoder=='ResNet50':
             input_dim, hid_dim = 1024, 1024
         elif encoder=='ResNet18':
@@ -200,23 +287,30 @@ class Downstream(torch.nn.Module):
             # the original GNN which do not contain pooling
             self.gnn = GNN(input_dim=input_dim, hid_dim=hid_dim, out_dim=hid_dim, gcn_layer_num=gln, pool=None,
                            gnn_type=gnn_type)
+            self.gnn.load_state_dict(torch.load(gnn_ckpt))
         elif mode == 'hard': # memory consuming
             self.gnn = ClusterGNN(input_dim=input_dim, hid_dim=hid_dim, out_dim=hid_dim,
                                   cluster_sizes=cluster_sizes, pool=None, gnn_type=gnn_type)
+            self.gnn.load_state_dict(torch.load(gnn_ckpt))
         elif mode == 'soft': # use GNN to learn the cluster id
+            if encoder=='GigaPath': # temp change the dimension
+                input_dim, hid_dim = 1536, 1536
             self.gnn = SoftClusterGNN(input_dim=input_dim, hid_dim=hid_dim, out_dim=hid_dim,
                                   cluster_sizes=cluster_sizes, pool=None, gnn_type=gnn_type, phase='finetune')
+            self.gnn.load_state_dict(torch.load(gnn_ckpt))
+        elif mode == 'GigaPath': # use GigaPath-Slide encoder
+            self.gnn = slide_encoder = create_model(gnn_ckpt, "gigapath_slide_enc12l768d", 1536)
 
         # if self.enc is not None:
         #     # self.enc.to(device)
         #     self.enc.eval()
         # # self.gnn.to(device)
 
-        self.gnn.load_state_dict(torch.load(gnn_ckpt))
+        
         print("successfully load pre-trained weights for gnn! @ {}".format(gnn_ckpt))
 
         if pretext in ['GraphCL', 'SimGRACE']:
-            self.model = FT(self.gnn, hid_dim=hid_dim, combine_mode=combine_mode, class_num=class_num, loss_name=self.loss_name)
+            self.model = FT(self.gnn, hid_dim=hid_dim, combine_mode=combine_mode, post_mode=post_mode, class_num=class_num, loss_name=self.loss_name)
             # self.model.to(device)
         else:
             raise ValueError("pretext should be GraphCL, SimGRACE")
@@ -364,10 +458,14 @@ class Downstream(torch.nn.Module):
 
             # get the patch embedding
             if self.enc is not None:
-                if self.encoder == 'Pathoduet':
-                    batch.x = self.enc(batch.x)[0][:, 2:].mean(dim=1)
-                elif self.encoder in ['ResNet50', 'ResNet18']:
-                    batch.x = self.enc(batch.x)
+                with torch.no_grad():
+                    if self.encoder == 'Pathoduet':
+                        batch.x = self.enc(batch.x)[0][:, 2:].mean(dim=1)
+                    elif self.encoder in ['ResNet50', 'ResNet18']:
+                        batch.x = self.enc(batch.x)
+                    elif self.encoder=='GigaPath':
+                        # with torch.no_grad():
+                        batch.x = self.enc(batch.x)
 
             if labels.dtype != torch.long:
                 labels = labels.long()
@@ -387,6 +485,7 @@ class Downstream(torch.nn.Module):
 
     def test_model(self, model, test_loader):
         model.eval()  # Set the model to evaluation mode
+        self.enc.eval()
         self.test_metrics.reset()  # Reset metrics for clean evaluation
         test_loss_accum = 0
         total_step = 0
@@ -403,6 +502,9 @@ class Downstream(torch.nn.Module):
                     if self.encoder == 'Pathoduet':
                         batch.x = self.enc(batch.x)[0][:, 2:].mean(dim=1)
                     elif self.encoder in ['ResNet50', 'ResNet18']:
+                        batch.x = self.enc(batch.x)
+                    elif self.encoder=='GigaPath':
+                        # with torch.no_grad():
                         batch.x = self.enc(batch.x)
 
                 # Forward pass
@@ -494,6 +596,6 @@ if __name__ == '__main__':
     dataname, num_parts = 'Prostate', 200
     graph_list, input_dim, hid_dim = load_data4pretrain(dataname, num_parts)
 
-    pt = Downstream(pretext, gnn_type, input_dim, hid_dim, gln=2, combine_mode='graph_level')
+    pt = Downstream(pretext, gnn_type, input_dim, hid_dim, gln=2, combine_mode='graph_level', post_mode='abmil')
     pt.model.to(device) 
     pt.train(dataname, graph_list, batch_size=10, aug1='dropN', aug2="permE", aug_ratio=None,lr=0.01, decay=0.0001,epochs=100)

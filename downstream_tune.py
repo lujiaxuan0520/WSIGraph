@@ -25,7 +25,8 @@ def make_parse():
 
     parser.add_argument('--gnn', default='TransformerConv', type=str) # 'GAT', 'GCN'
     parser.add_argument('--mode', default='hard', type=str)  # 'original', 'hard', 'soft'
-    parser.add_argument('--combine_mode', default='hier_mean', type=str)  # 'graph_level', 'region_level', 'hier_mean'
+    parser.add_argument('--combine_mode', default='hier_mean', type=str)  # 'graph_level', 'region_level', 'hier_mean', 'hier_weighted_mean'
+    parser.add_argument('--post_mode', default=None, type=str)  # None, 'linear_probing', 'abmil'
     parser.add_argument('--layer', default=2, type=int) # the layer of GNN
     parser.add_argument('--cluster_sizes', nargs='+', type=int, help='cluster size for each layer') # 100,50,10
     parser.add_argument('--dataset', default='CiteSeer', type=str) # 'CiteSeer', 'prostate'
@@ -441,7 +442,7 @@ if __name__ == '__main__':
 
     print("create Downstream instance...")
     pt = Downstream(pretext, gnn_type, encoder, encoder_path, gln=args.layer, cluster_sizes=args.cluster_sizes,
-                    mode=args.mode, num_workers=args.num_workers, combine_mode=args.combine_mode,
+                    mode=args.mode, post_mode=args.post_mode, num_workers=args.num_workers, combine_mode=args.combine_mode,
                     class_num=dataset_clss_num[dataname], loss_name=args.loss, gnn_ckpt=args.gnn_ckpt)
 
     print("fine-tuning...")

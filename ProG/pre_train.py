@@ -7,6 +7,7 @@ from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
 from random import shuffle
 import random
+from tqdm import tqdm
 
 from ProG.prompt import GNN, ClusterGNN, SoftClusterGNN
 from ProG.gcn import GcnEncoderGraph
@@ -57,6 +58,8 @@ class PreTrain(torch.nn.Module):
         # pass: get the input_dim and hid_dim for each encoder
         if encoder=='Pathoduet':
             input_dim, hid_dim = 768, 768
+        elif encoder=='GigaPath':
+            input_dim, hid_dim = 1536, 1536
         elif encoder=='ResNet50':
             input_dim, hid_dim = 1024, 1024
         elif encoder=='ResNet18':
@@ -194,7 +197,9 @@ class PreTrain(torch.nn.Module):
         train_loss_accum = 0
         total_step = 0
         for step, batch in enumerate(zip(loader1)):
+        # for step, batch in enumerate(tqdm(loader1, desc="Training Progress")):
             # batch1, batch2 = batch[0]
+            print("Step:", step)
             batch1, batch2, coord_1, coord_2 = batch[0]
             optimizer.zero_grad()
 
@@ -209,6 +214,11 @@ class PreTrain(torch.nn.Module):
                 elif self.encoder in ['ResNet50', 'ResNet18']:
                     batch1.x = self.enc(batch1.x)
                     batch2.x = self.enc(batch2.x)
+                elif self.encoder=='GigaPath':
+                    # self.enc.eval()
+                    # with torch.no_grad():
+                        batch1.x = self.enc(batch1.x)
+                        batch2.x = self.enc(batch2.x)
 
             x1 = model.module.forward_cl(batch1.x, batch1.edge_index, batch1.batch, coord_1)
             x2 = model.module.forward_cl(batch2.x, batch2.edge_index, batch2.batch, coord_2)
@@ -244,6 +254,7 @@ class PreTrain(torch.nn.Module):
 
             print("***epoch: {}/{} | train_loss: {:.8}".format(epoch, epochs, train_loss))
 
+            # if train_loss_min > train_loss:
             if train_loss_min > train_loss or save_epoch and epoch % 5 == 0:
                 train_loss_min = train_loss
                 checkpoint_name = "./pre_trained_gnn/{}.{}.{}.{}_epoch_{}_loss_{}.pth".format(dataname, self.pretext, self.gnn_type, checkpoint_suffix, str(epoch), str(round(train_loss_min,4)))

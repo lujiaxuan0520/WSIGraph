@@ -6,6 +6,7 @@
 *.json
 *.swp
 *.pyc
+*.txt
 /pre_trained_gnn/
 __pycache__/data_preprocess.cpython-39.pyc
 *.pyc

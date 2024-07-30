@@ -410,6 +410,7 @@ class SoftClusterGNN(torch.nn.Module):
             # 选择当前样本的节点
             mask = batch == i
             x_i = x[mask]
+            coord = coord.to(mask.device)
             coord_i = coord[mask]
 
             if mask.shape[0] != assignment_probs.shape[0]:
@@ -463,7 +464,7 @@ class SoftClusterGNN(torch.nn.Module):
                     # cluster_center = weighted_coords.sum(dim=0) / cluster_prob.sum().to(weighted_coords.device)
                     new_coords_list.append(cluster_center)
                 else:
-                    new_coords_list.append(torch.zeros((coord_i.size(1))))
+                    new_coords_list.append(torch.zeros((coord_i.size(1))).to('cuda'))
 
             # 更新总聚类数
             total_clusters += cluster_size

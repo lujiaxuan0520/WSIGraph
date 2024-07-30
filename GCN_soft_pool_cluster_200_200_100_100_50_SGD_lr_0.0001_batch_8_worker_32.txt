@@ -5854,3 +5854,44 @@ Traceback (most recent call last):
   File "/mnt/petrelfs/yanfang/.local/lib/python3.6/site-packages/petrel_client/cache/mc/mc.py", line 9, in <module>
     from petrel_client.cache.mc.petrel_pymc import McClient
 ImportError: libclickhouse-cpp-lib.so: cannot open shared object file: No such file or directory
+ERROR: Unexpected bus error encountered in worker. This might be caused by insufficient shared memory (shm).
+ ERROR: Unexpected bus error encountered in worker. This might be caused by insufficient shared memory (shm).
+ Traceback (most recent call last):
+  File "pretrain.py", line 125, in <module>
+    checkpoint_suffix=args.checkpoint_suffix, save_epoch=True)
+  File "/mnt/hwfile/smart_health/lujiaxuan/WSIGraph/ProG/pre_train.py", line 239, in train
+    train_loss = self.train_graphcl(self.model, loader1, loader2, optimizer)
+  File "/mnt/hwfile/smart_health/lujiaxuan/WSIGraph/ProG/pre_train.py", line 196, in train_graphcl
+    for step, batch in enumerate(zip(loader1)):
+  File "/mnt/petrelfs/yanfang/anaconda3/envs/allslide/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 521, in __next__
+    data = self._next_data()
+  File "/mnt/petrelfs/yanfang/anaconda3/envs/allslide/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1203, in _next_data
+    return self._process_data(data)
+  File "/mnt/petrelfs/yanfang/anaconda3/envs/allslide/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 1229, in _process_data
+    data.reraise()
+  File "/mnt/petrelfs/yanfang/anaconda3/envs/allslide/lib/python3.6/site-packages/torch/_utils.py", line 434, in reraise
+    raise exception
+RuntimeError: Caught RuntimeError in DataLoader worker process 0.
+Original Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/anaconda3/envs/allslide/lib/python3.6/site-packages/torch/utils/data/_utils/worker.py", line 287, in _worker_loop
+    data = fetcher.fetch(index)
+  File "/mnt/petrelfs/yanfang/anaconda3/envs/allslide/lib/python3.6/site-packages/torch/utils/data/_utils/fetch.py", line 52, in fetch
+    return self.collate_fn(data)
+  File "/mnt/hwfile/smart_health/lujiaxuan/WSIGraph/ProG/utils.py", line 96, in collate_fn
+  File "/mnt/petrelfs/yanfang/anaconda3/envs/allslide/lib/python3.6/site-packages/torch_geometric/data/batch.py", line 75, in from_data_list
+    exclude_keys=exclude_keys,
+  File "/mnt/petrelfs/yanfang/anaconda3/envs/allslide/lib/python3.6/site-packages/torch_geometric/data/collate.py", line 86, in collate
+    increment)
+  File "/mnt/petrelfs/yanfang/anaconda3/envs/allslide/lib/python3.6/site-packages/torch_geometric/data/collate.py", line 142, in _collate
+    storage = elem.storage()._new_shared(numel)
+  File "/mnt/petrelfs/yanfang/anaconda3/envs/allslide/lib/python3.6/site-packages/torch/storage.py", line 157, in _new_shared
+    return cls._new_using_fd(size)
+RuntimeError: falseINTERNAL ASSERT FAILED at "../aten/src/ATen/MapAllocator.cpp":300, please report a bug to PyTorch. unable to write to file </torch_473365_540>
+
+Error in atexit._run_exitfuncs:
+Traceback (most recent call last):
+  File "/mnt/petrelfs/yanfang/anaconda3/envs/allslide/lib/python3.6/multiprocessing/popen_fork.py", line 28, in poll
+    pid, sts = os.waitpid(self.pid, flag)
+  File "/mnt/petrelfs/yanfang/anaconda3/envs/allslide/lib/python3.6/site-packages/torch/utils/data/_utils/signal_handling.py", line 66, in handler
+    _error_if_any_worker_fails()
+RuntimeError: DataLoader worker (pid 481412) is killed by signal: Bus error. It is possible that dataloader's workers are out of shared memory. Please try to raise your shared memory limit.

@@ -14,7 +14,15 @@ import pandas as pd
 from PIL import Image, ImageFilter
 import h5py
 import openslide
-from pathadox_allslide import AllSlide
+try:
+    from pathadox_allslide import AllSlide
+except Exception:
+    def add_to_sys_path(dir_path):
+        sys.path.append(dir_path)
+        for root, dirs, files in os.walk(dir_path):
+            sys.path.append(root)
+    add_to_sys_path("/mnt/hwfile/smart_health/lujiaxuan/allslide")
+    import AllSlide
 from scipy.spatial import KDTree
 from torch_geometric.data import Data
 

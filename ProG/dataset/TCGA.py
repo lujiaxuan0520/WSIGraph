@@ -373,7 +373,7 @@ def TCGA(num_parts=200, phase='train'):
     cfg = Config()
     Mydata = TCGA_e2e(cfg.Data, phase=phase)
 
-    print(Mydata[0])
+    # print(Mydata[0])
     # dataloader = DataLoader(Mydata)
 
     # for i, data in (enumerate(dataloader)):
