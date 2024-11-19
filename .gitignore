@@ -1,0 +1,15 @@
+# Project exclude paths
+/old/
+/.idea/
+.idea/workspace.xml
+.
+*.json
+*.swp
+*.pyc
+*.txt
+*.pt
+/pre_trained_gnn/
+__pycache__/data_preprocess.cpython-39.pyc
+*.pyc
+.DS_Store
+
