@@ -7,6 +7,9 @@ import torchmetrics
 from torchmetrics.classification import Recall, Precision, Specificity
 from torch_geometric.loader import DataLoader
 from torch_geometric.data import Data
+from torchvision import transforms
+import torch.nn.functional as F
+import torch.nn.functional as F
 from random import shuffle
 import random
 import math
@@ -282,6 +285,10 @@ class Downstream(torch.nn.Module):
         elif encoder=='GigaPath':
             # input_dim, hid_dim = 1536, 1536
             input_dim, hid_dim = 768, 768
+        elif encoder=='UNI':
+            input_dim, hid_dim = 1024, 1024
+        elif encoder=='PathOrchestra':
+            input_dim, hid_dim = 1024, 1024
         elif encoder=='ResNet50':
             input_dim, hid_dim = 1024, 1024
         elif encoder=='ResNet18':
@@ -301,6 +308,10 @@ class Downstream(torch.nn.Module):
         elif mode == 'soft': # use GNN to learn the cluster id
             if encoder=='GigaPath': # temp change the dimension
                 input_dim, hid_dim = 1536, 1536
+            elif encoder=='UNI':
+                input_dim, hid_dim = 1024, 1024
+            elif encoder=='PathOrchestra':
+                input_dim, hid_dim = 1024, 1024
             self.gnn = SoftClusterGNN(input_dim=input_dim, hid_dim=hid_dim, out_dim=hid_dim,
                                   cluster_sizes=cluster_sizes, pool=None, gnn_type=gnn_type, phase='finetune')
             self.gnn.load_state_dict(torch.load(gnn_ckpt))
@@ -487,6 +498,21 @@ class Downstream(torch.nn.Module):
                             outputs.append(encoded_batch)
                         
                         batch.x = torch.cat(outputs, dim=0)
+                    elif self.encoder=='UNI':
+                        # transform = transforms.Compose(
+                        #     [
+                        #         transforms.Resize(224),
+                        #         transforms.ToTensor(),
+                        #         transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+                        #     ]
+                        # )
+                        x_subset = F.interpolate(x_subset, size=(224, 224), mode="bilinear", align_corners=False)
+                        mean = torch.tensor([0.485, 0.456, 0.406], dtype=x_subset.dtype, device=x_subset.device)
+                        std = torch.tensor([0.229, 0.224, 0.225], dtype=x_subset.dtype, device=x_subset.device)
+                        x_subset = (x_subset - mean[None, :, None, None]) / std[None, :, None, None]
+                        batch.x = self.enc(batch.x)
+                    elif self.encoder=='PathOrchestra':
+                        batch.x = self.enc(batch.x)
 
                             
 
@@ -528,6 +554,21 @@ class Downstream(torch.nn.Module):
                         batch.x = self.enc(batch.x)
                     elif self.encoder=='GigaPath':
                         # with torch.no_grad():
+                        batch.x = self.enc(batch.x)
+                    elif self.encoder=='UNI':
+                        # transform = transforms.Compose(
+                        #     [
+                        #         transforms.Resize(224),
+                        #         transforms.ToTensor(),
+                        #         transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+                        #     ]
+                        # )
+                        x_subset = F.interpolate(x_subset, size=(224, 224), mode="bilinear", align_corners=False)
+                        mean = torch.tensor([0.485, 0.456, 0.406], dtype=x_subset.dtype, device=x_subset.device)
+                        std = torch.tensor([0.229, 0.224, 0.225], dtype=x_subset.dtype, device=x_subset.device)
+                        x_subset = (x_subset - mean[None, :, None, None]) / std[None, :, None, None]
+                        batch.x = self.enc(batch.x)
+                    elif self.encoder=='PathOrchestra':
                         batch.x = self.enc(batch.x)
 
                 # Forward pass

@@ -11,6 +11,8 @@ import os
 import io
 from tqdm import tqdm
 from petrel_client.client import Client
+from torchvision import transforms
+import torch.nn.functional as F
 
 from ProG.prompt import GNN, ClusterGNN, SoftClusterGNN
 from ProG.gcn import GcnEncoderGraph
@@ -65,6 +67,10 @@ class PreTrain(torch.nn.Module):
             input_dim, hid_dim = 768, 768
         elif encoder=='GigaPath':
             input_dim, hid_dim = 1536, 1536
+        elif encoder=='UNI':
+            input_dim, hid_dim = 1024, 1024
+        elif encoder=='PathOrchestra':
+            input_dim, hid_dim = 1024, 1024
         elif encoder=='ResNet50':
             input_dim, hid_dim = 1024, 1024
         elif encoder=='ResNet18':
@@ -120,7 +126,7 @@ class PreTrain(torch.nn.Module):
                 shuffle(graph_list)
 
 
-            if dataname in ['Prostate', 'TCGA', 'TCGA_frozen']:
+            if dataname in ['Prostate', 'TCGA', 'TCGA_frozen', 'Combined']:
                 loader = DataLoader(graph_list, batch_size=batch_size, shuffle=False,
                                      num_workers=self.num_workers)  # you must set shuffle=False !
                 loader.collate_fn = collate_fn
@@ -271,6 +277,21 @@ class PreTrain(torch.nn.Module):
             elif self.encoder in ['ResNet50', 'ResNet18']:
                 enc_output = self.enc(x_subset)
             elif self.encoder == 'GigaPath':
+                enc_output = self.enc(x_subset)
+            elif self.encoder == 'UNI':
+                # transform = transforms.Compose(
+                #     [
+                #         transforms.Resize(224),
+                #         transforms.ToTensor(),
+                #         transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+                #     ]
+                # )
+                x_subset = F.interpolate(x_subset, size=(224, 224), mode="bilinear", align_corners=False)
+                mean = torch.tensor([0.485, 0.456, 0.406], dtype=x_subset.dtype, device=x_subset.device)
+                std = torch.tensor([0.229, 0.224, 0.225], dtype=x_subset.dtype, device=x_subset.device)
+                x_subset = (x_subset - mean[None, :, None, None]) / std[None, :, None, None]
+                enc_output = self.enc(x_subset)
+            elif self.encoder=='PathOrchestra':
                 enc_output = self.enc(x_subset)
             else:
                 raise ValueError(f"Unsupported encoder type: {self.encoder}")

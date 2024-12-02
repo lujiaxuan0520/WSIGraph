@@ -16,11 +16,12 @@ from ProG.dataset.CiteSeer import CiteSeer
 from ProG.dataset.TCGA import TCGA
 from ProG.dataset.TCGA_frozen import TCGA_frozen
 from ProG.dataset.JinYu import JinYu
+from ProG.dataset.Combined import Combined
 
 seed = 0
 
 datasets = {'CiteSeer': CiteSeer, 'Prostate': Prostate, 'TCGA': TCGA, 'TCGA_frozen': TCGA_frozen,
-        'JinYu': JinYu}
+        'JinYu': JinYu, 'Combined': Combined}
 
 
 def seed_everything(seed):

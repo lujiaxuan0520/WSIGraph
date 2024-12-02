@@ -280,6 +280,12 @@ class TCGA_e2e(data.Dataset):
         '''
         features_path_view1 = os.path.join(saved_data_path.replace("data", "features"), self.encoder+"_view1.pt")
         features_path_view2 = os.path.join(saved_data_path.replace("data", "features"), self.encoder+"_view2.pt")
+        # save the edge and coordinate information alone for each encoder instead of GigaPath
+        if self.encoder not in ['GigaPath']:
+            edge_index_512_file = edge_index_512_file.replace(".pt", "_"+self.encoder+".pt")
+            edge_index_256_file = edge_index_256_file.replace(".pt", "_"+self.encoder+".pt")
+            coordinates_512_file = coordinates_512_file.replace(".pt", "_"+self.encoder+".pt")
+            coordinates_256_file = coordinates_256_file.replace(".pt", "_"+self.encoder+".pt")
         if self.path_exists([features_path_view1, features_path_view2, edge_index_512_file, edge_index_256_file, coordinates_512_file, coordinates_256_file]):
             # x_rand = torch.rand((500, 3, 224, 224))
             # load other information

@@ -45,6 +45,24 @@ cd /mnt/hwfile/smart_health/lujiaxuan/WSIGraph
 python pretrain.py --model GraphCL --gnn GCN --mode soft --dataset TCGA --encoder GigaPath --encoder_path /mnt/hwfile/smart_health/lujiaxuan/hest/fm_v1/gigapath/pytorch_model.bin --learning_rate 0.0001 --cluster_sizes 200 200 100 100 50 --batch_size 8 --num_parts 500 --num_workers 32 --checkpoint_suffix GigaPath_light_GCN_soft_pool_cluster_200_200_100_100_50_SGD_lr_0.0001_batch_8_worker_32
 ```
 
+注：混合数据集训练修改--dataset Combined，并且需要在Combined.py中修改Config，需要测试__get_item__中是否会有错
+
+基于PathOrchestra作为patch encoder（Light网络）：
+```bash
+proxy_off
+conda activate newtorch
+cd /mnt/hwfile/smart_health/lujiaxuan/WSIGraph
+python pretrain.py --model GraphCL --gnn GCN --mode soft --dataset TCGA --encoder PathOrchestra --encoder_path /mnt/hwfile/smart_health/lujiaxuan/PathOrchestra/eval/weights/PathOrchestra_V1.0.0.bin --learning_rate 0.0001 --cluster_sizes 200 200 100 100 50 --batch_size 8 --num_parts 500 --num_workers 16 --checkpoint_suffix PathOrchestra_light_GCN_soft_pool_cluster_200_200_100_100_50_SGD_lr_0.0001_batch_8_worker_32
+```
+
+基于UNI作为patch encoder（Light网络）：
+```bash
+proxy_off
+conda activate newtorch
+cd /mnt/hwfile/smart_health/lujiaxuan/WSIGraph
+python pretrain.py --model GraphCL --gnn GCN --mode soft --dataset TCGA --encoder UNI --encoder_path /mnt/hwfile/smart_health/lujiaxuan/UNI/assets/ckpts/vit_large_patch16_224.dinov2.uni_mass100k/pytorch_model.bin --learning_rate 0.0001 --cluster_sizes 200 200 100 100 50 --batch_size 8 --num_parts 500 --num_workers 32 --checkpoint_suffix GigaPath_light_GCN_soft_pool_cluster_200_200_100_100_50_SGD_lr_0.0001_batch_8_worker_32
+```
+
 基于PathoDuet作为patch encoder（Light网络）：
 ```bash
 proxy_off
