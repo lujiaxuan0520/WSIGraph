@@ -36,16 +36,18 @@ cd /mnt/data/smart_health_02/lujiaxuan/workingplace/WSIGraph/code/ProG
 python pretrain.py --model GraphCL --gnn GCN --mode soft --dataset Prostate --encoder Pathoduet --encoder_path /mnt/data/smart_health_02/lujiaxuan/workingplace/GleasonGrade/code/PathoDuet/models/checkpoint_p2.pth --learning_rate 0.0001 --cluster_sizes 200 100 50 --batch_size 3 --num_parts 200 --num_workers 32 --checkpoint_suffix GCN_soft_pool_cluster_200_100_50_SGD_lr_0.0001_batch_3_worker_32
 ```
 
-- 运行命令(TCGA_crop_FFPE): 
+- 运行命令(Combined): 
 基于GigaPath-Tile作为patch encoder（Light网络）：
 ```bash
 proxy_off
 conda activate newtorch
 cd /mnt/hwfile/smart_health/lujiaxuan/WSIGraph
-python pretrain.py --model GraphCL --gnn GCN --mode soft --dataset TCGA --encoder GigaPath --encoder_path /mnt/hwfile/smart_health/lujiaxuan/hest/fm_v1/gigapath/pytorch_model.bin --learning_rate 0.0001 --cluster_sizes 200 200 100 100 50 --batch_size 8 --num_parts 500 --num_workers 32 --checkpoint_suffix GigaPath_light_GCN_soft_pool_cluster_200_200_100_100_50_SGD_lr_0.0001_batch_8_worker_32
+python pretrain.py --model GraphCL --gnn GCN --mode soft --dataset Combined --encoder GigaPath --encoder_path /mnt/hwfile/smart_health/lujiaxuan/hest/fm_v1/gigapath/pytorch_model.bin --learning_rate 0.0001 --cluster_sizes 200 200 100 100 50 --batch_size 8 --num_parts 500 --num_workers 32 --checkpoint_suffix GigaPath_light_GCN_soft_pool_cluster_200_200_100_100_50_SGD_lr_0.0001_batch_8_worker_32
 ```
 
-注：混合数据集训练修改--dataset Combined，并且需要在Combined.py中修改Config，需要测试__get_item__中是否会有错
+* 使用混合数据集--dataset Combined，并且需要在Combined.py中修改Config确定使用混合几个数据集
+* 使用单独数据集--dataset TCGA或者TCGA_frozen或者RUIJIN或者Tsinghua等
+* 加载预训练模型继续训练：--resume_ckpt /mnt/hwfile/smart_health/lujiaxuan/WSIGraph/pre_trained_gnn/TCGA.GraphCL.GCN.GigaPath_light_GCN_soft_pool_cluster_200_200_100_100_50_SGD_lr_0.0001_batch_8_worker_32_epoch_100_loss_3.9414.pth，注意学习率应当缩小才行
 
 基于PathOrchestra作为patch encoder（Light网络）：
 ```bash

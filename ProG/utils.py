@@ -15,12 +15,19 @@ from ProG.dataset.prostate_RJ import Prostate
 from ProG.dataset.CiteSeer import CiteSeer
 from ProG.dataset.TCGA import TCGA
 from ProG.dataset.TCGA_frozen import TCGA_frozen
+from ProG.dataset.RUIJIN import RUIJIN
+from ProG.dataset.RJ_lymphoma import RJ_lymphoma
+from ProG.dataset.Digest_all import Digest_all
+from ProG.dataset.Tsinghua import Tsinghua
+from ProG.dataset.XIJING import XIJING
+from ProG.dataset.IHC import IHC
 from ProG.dataset.JinYu import JinYu
 from ProG.dataset.Combined import Combined
 
 seed = 0
 
-datasets = {'CiteSeer': CiteSeer, 'Prostate': Prostate, 'TCGA': TCGA, 'TCGA_frozen': TCGA_frozen,
+datasets = {'CiteSeer': CiteSeer, 'Prostate': Prostate, 'TCGA': TCGA, 'TCGA_frozen': TCGA_frozen, 'RUIJIN': RUIJIN, 
+        'RJ_lymphoma': RJ_lymphoma, 'Digest_all': Digest_all, 'Tsinghua': Tsinghua, 'XIJING': XIJING, 'IHC': IHC,
         'JinYu': JinYu, 'Combined': Combined}
 
 

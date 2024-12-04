@@ -126,7 +126,7 @@ class PreTrain(torch.nn.Module):
                 shuffle(graph_list)
 
 
-            if dataname in ['Prostate', 'TCGA', 'TCGA_frozen', 'Combined']:
+            if dataname in ['Prostate', 'TCGA', 'TCGA_frozen', 'RUIJIN', 'RJ_lymphoma', 'Digest_all', 'Tsinghua', 'XIJING', 'IHC', 'Combined']:
                 loader = DataLoader(graph_list, batch_size=batch_size, shuffle=False,
                                      num_workers=self.num_workers)  # you must set shuffle=False !
                 loader.collate_fn = collate_fn
