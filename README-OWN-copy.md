@@ -49,6 +49,8 @@ python pretrain.py --model GraphCL --gnn GCN --mode soft --dataset Combined --en
 * 使用单独数据集--dataset TCGA或者TCGA_frozen或者RUIJIN或者Tsinghua等
 * 加载预训练模型继续训练：--resume_ckpt /mnt/hwfile/smart_health/lujiaxuan/WSIGraph/pre_trained_gnn/TCGA.GraphCL.GCN.GigaPath_light_GCN_soft_pool_cluster_200_200_100_100_50_SGD_lr_0.0001_batch_8_worker_32_epoch_100_loss_3.9414.pth，注意学习率应当缩小才行
 
+更多预训练命令见印象笔记“WSI病理大模型”
+
 基于PathOrchestra作为patch encoder（Light网络）：
 ```bash
 proxy_off
@@ -75,11 +77,20 @@ python pretrain.py --model GraphCL --gnn GCN --mode soft --dataset TCGA --encode
 
 
 - 初始化图可视化：参考visualize_graph()
+- 统计预训练WSI数量：calculate_pretrained_wsi_files.py
+    (商汤肠胃)Digest_ALL_crop_FFPE.json: 1632
+    (IHC)IHC_crop_new.json: 1394
+    (瑞金淋巴瘤)RJ_crop_lymphoma.json: 1112
+    (瑞金多病种)RUIJIN_crop.json: 3308
+    (TCGA福尔马林)TCGA_crop_FFPE.json: 11251
+    (TCGA冰冻)TCGA_crop_Frozen.json: 17602
+    (清华)Tsinghua_crop.json: 33802
+    (西京)XIJING_crop.json: 13936
 
 
 ## 下游微调
 
-更多不同配置见scripts/finetune_JinYu.sh
+更多不同配置见scripts/finetune_xxx.sh
 
 - 运行命令(JinYu):
 ```bash

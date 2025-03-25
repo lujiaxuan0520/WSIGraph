@@ -2,27 +2,48 @@ import glob
 import os
 import re
 import json
-import random
-import numpy as np
-import bisect
 import sys
 import io
+sys.path.append('.')
 from tqdm import tqdm
-import pandas as pd
+# from utils.util import read_yaml
+import torchvision.transforms as transforms
+import random
+import numpy as np
 import torch
-import torch.utils.data as data
-import cv2
-from torch.utils.data import Dataset
-from torchvision import transforms
-
-from ProG.graph import graph_views, visualize_graph
-from pathlib import Path
-from petrel_client.client import Client
+import pandas as pd
 from PIL import Image, ImageFilter
 import h5py
 import openslide
+# try:
+#     from pathadox_allslide import AllSlide
+# except Exception:
+#     def add_to_sys_path(dir_path):
+#         sys.path.append(dir_path)
+#         for root, dirs, files in os.walk(dir_path):
+#             sys.path.append(root)
+#     add_to_sys_path("/mnt/hwfile/smart_health/lujiaxuan/allslide")
+#     import AllSlide
 from scipy.spatial import KDTree
 from torch_geometric.data import Data
+
+import cv2
+# import pdb
+
+import torch
+import torch.utils.data as data
+
+from ProG.graph import graph_views, visualize_graph
+from pathlib import Path
+
+from petrel_client.client import Client
+
+NR_CLASSES = 4
+
+path_map = {
+    'Phenotype':'phenotype/Phenotype',
+}
+
 
 class GaussianBlur(object):
     """Gaussian blur augmentation from SimCLR: https://arxiv.org/abs/2002.05709"""
@@ -52,6 +73,9 @@ augmentation_test = [
     transforms.CenterCrop(224),
     transforms.ToTensor()
 ]
+
+
+
 
 def sort_key_function(path):
     """sort the path according to the number part of the filename"""
@@ -97,99 +121,182 @@ def normalize_coordinates(coordinates):
     return normalized_array
 
 
-class CombinedDataset(Dataset):
+def find_urls_by_sample_id(svs_urls, sample_id):
     """
-    A dataset that combines multiple datasets by concatenating their data_info.
-    
+    从svs_urls列表中查找所有以sample_id开头的元素。
+
+    参数:
+    svs_urls (list of str): 包含SVS URL的列表。
+    sample_id (str): 要匹配的样本ID。
+
+    返回:
+    list of str: 所有以sample_id开头的SVS URL列表。
+    """
+    matched_urls = []
+    for url in svs_urls:
+        trimmed_url = url.rstrip('/')
+        path_parts = trimmed_url.split('/')
+        last_part = path_parts[-1]
+        if last_part.startswith(sample_id):
+            matched_urls.append(url)
+    return matched_urls
+
+
+class Cohort_TCGA_e2e(data.Dataset):
+    """ downstream TCGA dataset for finetuning
+
     Args:
-        datasets (list): List of dataset instances to combine.
+        dataset_cfg (dict): Define from the config file(yaml).
+        phase (str): 'train' or 'test'. If 'train', return the traindataset. If 'test', return the testdataset.
+
     """
-    
+
     def __init__(self, dataset_cfg=None,
-                 phase=None, prefix='', encoder=None):
-        """
-        Initialize the CombinedDataset.
+                 phase=None, prefix='Cohort_TCGA_ACC_Phenotype', label='ajcc_stage',encoder=None):
         
-        Args:
-            datasets (list): List of dataset instances (e.g., TCGA_e2e, TCGA_frozen).
-        """
         # client = Client('/mnt/hwfile/smart_health/lujiaxuan/petreloss.conf')
         self.client = Client('/mnt/petrelfs/yanfang/.petreloss.conf')
+        self.dataset_cfg = dataset_cfg
         self.encoder = encoder
-        prefix_dicts = {
-            'TCGA': 'TCGA_crop_FFPE',
-            'TCGA_frozen': 'TCGA_crop_Frozen',
-            'RUIJIN': 'RUIJIN_crop',
-            'RJ_lymphoma': 'RJ_crop_lymphoma', 
-            'Digest_all': 'Digest_ALL_crop_FFPE', 
-            'Tsinghua': 'Tsinghua_crop', 
-            'XIJING': 'XIJING_crop', 
-            'IHC': 'IHC_crop_new'
+        self.label = label
+
+        self.ajcc_stages_label_map = {
+            "Stage I": 0,
+            "Stage II": 1,
+            "Stage III": 2,
+            "Stage IV": 3
+        }
+        self.ajcc_t_stages_label_map = {
+            "T1": 0,
+            "T2": 1,
+            "T3": 2,
+            "T4": 3
+        }
+        self.ajcc_m_stages_label_map = {
+            "M0": 0,
+            "M1": 1
+        }
+        self.ajcc_n_stages_label_map = {
+            "N0": 0,
+            "N1": 1
         }
 
-        self.data_info = []
-        self.datasets = dataset_cfg['datasets']
-        for dataset in self.datasets:
-            prefix = prefix_dicts[dataset]
-            json_filename = f"{prefix}.json"
-            if os.path.exists(json_filename):
-                with open(json_filename, 'r') as f:
-                    data = json.load(f)
-                self.data_info.extend(data)
-            else:
-                print("Error for loading dataset:", dataset)
+        bucket_name = 'yanfang3'
 
-        # self.cumulative_sizes = self.cumsum(self.datasets)
-        
-        # Concatenate data_info from all datasets
-        # for dataset in datasets:
-        #     self.data_info.extend(dataset.data_info)
+        # url = 'yanfang:s3://yanfang3/TCGA_crop_FFPE/'
+        # url = f'yanfang:s3://{bucket_name}/{prefix}/'
+        url = f'yanfang:s3://{bucket_name}/TCGA_crop_Frozen/'
+        wsi_paths = self.client.list(url)
+        json_filename = f"{prefix}.json"
+
+        if os.path.exists(json_filename):
+            with open(json_filename, 'r') as f:
+                self.data_info = json.load(f)
+        else:
+            # img_urls = [f'yanfang:s3://{bucket_name}/{wsi_path}' for wsi_path in wsi_paths]
+            Cohort_TCGA_e2e =[d for d in wsi_paths if 'TCGA' in d]
+            
+            match_tcga = re.search(r'(TCGA_[A-Z]+)', prefix)
+            if match_tcga:
+                tcga = match_tcga.group(1).replace("_", "-").strip('/')
+                tcga_part = tcga.split('-')[-1]
+                tcga_task = prefix.split('_')[-1]
+                label_path_dir = os.path.join("/mnt/hwfile/smart_health/lujiaxuan/cohort-TCGA", tcga_part, path_map[tcga_task])
+                label_path = os.path.join(label_path_dir, os.listdir(label_path_dir)[0])
+            else:
+                AssertionError("TCGA prefix not found!")
+
+            self.data_info = []
+            # for tcga
+            url_prefix_frozen = url + tcga + '/'
+            url_prefix_ffpe = url_prefix_frozen.replace("Frozen", "FFPE")
+            svs_urls = [url_prefix_frozen + d for d in self.client.list(url_prefix_frozen)]
+            svs_urls.extend([url_prefix_ffpe + d for d in self.client.list(url_prefix_ffpe)])
+
+            # for Phenotype
+            data = pd.read_csv(label_path, sep='\t')
+            data_dict = data.to_dict(orient='records')
+            for item in data_dict:
+                sample_id = item['sample']
+
+                if self.label == 'ajcc_stage':
+                    ajcc_stage = item['ajcc_pathologic_stage.diagnoses'] # whole stage, eg, Stage III
+                    if ajcc_stage not in self.ajcc_stages_label_map:
+                        continue
+                    label = self.ajcc_stages_label_map[ajcc_stage]
+                elif self.label == 'ajcc_t_stage':
+                    ajcc_t_stage = item['ajcc_pathologic_t.diagnoses']
+                    if ajcc_t_stage not in self.ajcc_t_stages_label_map:
+                        continue
+                    label = self.ajcc_t_stages_label_map[ajcc_t_stage]
+                elif self.label == 'ajcc_m_stage':
+                    ajcc_m_stage = item['ajcc_pathologic_m.diagnoses']
+                    if ajcc_m_stage not in self.ajcc_m_stages_label_map:
+                        continue
+                    label = self.ajcc_m_stages_label_map[ajcc_m_stage]
+                elif self.label == 'ajcc_n_stage':
+                    ajcc_n_stage = item['ajcc_pathologic_n.diagnoses']
+                    if ajcc_n_stage not in self.ajcc_n_stages_label_map:
+                        continue
+                    label = self.ajcc_n_stages_label_map[ajcc_n_stage]
+                else:
+                    AssertionError("Error for:", self.label)
+
+                matched_svs = find_urls_by_sample_id(svs_urls, sample_id)
+                if len(matched_svs) == 0: # not found
+                    continue
+                elif len(matched_svs) == 1: # exact match
+                    matched_svs = matched_svs[0]
+                else: # match more than one svs
+                    matched_svs = matched_svs[0]
+                    print("more than 1 svs found for:", matched_svs)
+                svs_url = matched_svs
+                
+                patch_512_folder = os.path.join(svs_url, 'patch_512')
+                patch_256_folder = os.path.join(svs_url, 'patch_256')
+                img_names_512 = list(self.client.list(patch_512_folder))
+                img_names_256 = list(self.client.list(patch_256_folder))
+
+                most_patch_num = 500
+                least_patch_num = 200
+
+                if len(img_names_512) < 50 or len(img_names_256) < 50:
+                    continue
+
+                if len(img_names_512) > most_patch_num:
+                    img_names_512 = random.sample(img_names_512, most_patch_num)
+                if len(img_names_256) > most_patch_num:
+                    img_names_256 = random.sample(img_names_256, most_patch_num)
+
+                if len(img_names_512) < least_patch_num:
+                    if len(img_names_512) > 0:
+                        img_names_512 += random.choices(img_names_512, k=least_patch_num - len(img_names_512))
+                    else:
+                        print(f"Warning: img_names_512 is empty for {svs_url}, cannot fill to least_patch_num")
+                if len(img_names_256) < least_patch_num:
+                    if len(img_names_256) > 0:
+                        img_names_256 += random.choices(img_names_256, k=least_patch_num - len(img_names_256))
+                    else:
+                        print(f"Warning: img_names_256 is empty for {svs_url}, cannot fill to least_patch_num")
+
+                self.data_info.append({
+                    'svs_url': svs_url,
+                    'img_names_512': img_names_512,
+                    'img_names_256': img_names_256,
+                    'label': label
+                })
+            with open(json_filename, 'w') as f:
+                json.dump(self.data_info, f)
         random.shuffle(self.data_info)
+
         if phase in ['train', 'finetune']:
             self.patch_transform = transforms.Compose(augmentation_train)
         elif phase in ['valid', 'test']:
             self.patch_transform = transforms.Compose(augmentation_test)
         self.phase = phase
 
-        
-    # def cumsum(self, datasets):
-    #     """
-    #     Compute cumulative sizes for indexing.
-        
-    #     Args:
-    #         datasets (list): List of dataset instances.
-        
-    #     Returns:
-    #         list: Cumulative sizes.
-    #     """
-    #     cumulative = [0]
-    #     for dataset in datasets:
-    #         cumulative.append(cumulative[-1] + len(dataset))
-    #     return cumulative
-
     def __len__(self):
         return len(self.data_info)
-
-    # def __getitem__(self, idx):
-    #     """
-    #     Retrieve a sample by index.
-        
-    #     Args:
-    #         idx (int): Index of the sample.
-        
-    #     Returns:
-    #         dict or any: The sample data returned by the appropriate dataset.
-    #     """
-    #     if idx < 0:
-    #         if -idx > len(self):
-    #             raise ValueError("Absolute value of index should not exceed dataset length")
-    #         idx = len(self) + idx
-        
-    #     # Find the dataset that contains the idx
-    #     dataset_idx = bisect.bisect_right(self.cumulative_sizes, idx) - 1
-    #     sample_idx = idx - self.cumulative_sizes[dataset_idx]
-        
-    #     return self.datasets[dataset_idx][sample_idx]
 
     # check whether the path exits (only for files on the local)
     def path_exists_local(self, path_list):
@@ -230,8 +337,7 @@ class CombinedDataset(Dataset):
         slide_id = info['svs_url'].rstrip('/').split('/')[-1]
         data_dict.update(slide_id=slide_id)
 
-        # slide_label = self.label[idx]
-        slide_label = 0
+        slide_label = info['label']
         data_dict.update(slide_label=slide_label)
 
         # Load patch data from patch_512 and patch_256 folders
@@ -310,7 +416,10 @@ class CombinedDataset(Dataset):
                 view_2_data = Data(x=x_2, edge_index=edge_index_256)
                 view_2 = np.array([view_2_data, coordinates_256])
                 load_from_ceph_success = True
-                return view_1, view_2, saved_data_path
+                if self.phase == 'train':
+                    return view_1, view_2, saved_data_path
+                else:
+                    return view_1, view_2, slide_label, saved_data_path
 
         #     # # load data from local
         #     # imgs_512 = torch.load(imgs_512_file)
@@ -458,6 +567,7 @@ class CombinedDataset(Dataset):
             view_1, view_2 = g_1, g_2
             coord_1, coord_2 = coordinates_512, coordinates_256
 
+
         # save the data
         # os.makedirs(saved_data_path, exist_ok=True)
         # torch.save(imgs_512, imgs_512_file)
@@ -475,6 +585,7 @@ class CombinedDataset(Dataset):
         self.upload_tensor_to_ceph(view_2.edge_index, edge_index_256_file)
         self.upload_tensor_to_ceph(coord_2, coordinates_256_file)
 
+
         view_1 = np.array([view_1, coord_1])
         view_2 = np.array([view_2, coord_2])
 
@@ -490,12 +601,19 @@ class CombinedDataset(Dataset):
             return view_1, view_2, slide_label, saved_data_path
 
 
+# def Train_dataset(cfg, phase='train'):
+#     dataset = Prostate_e2e(cfg.Data, phase=phase)
+#     return dataset
+#
+#
+# def Test_dataset(cfg, phase='test'):
+#     dataset = Prostate_e2e(cfg.Data, phase=phase)
+#     return dataset
+
+
 class Config:
     def __init__(self):
         self.Data = {
-            # 'datasets': ['TCGA', 'TCGA_frozen', 'RUIJIN', 'RJ_lymphoma', 'Digest_all', 'Tsinghua', 'XIJING', 'IHC'],
-            'datasets': ['TCGA', 'TCGA_frozen', 'RUIJIN', 'RJ_lymphoma', 'Digest_all', 'Tsinghua', 'XIJING'],
-            # 'datasets': ['RUIJIN', 'RJ_lymphoma', 'Digest_all', 'XIJING', 'IHC'],
             # 'base_path': '/mnt/data/smart_health_02/transfers/lujiaxuan/workingplace/GleasonGrade/segResData1/patches', # loading the patch data
             # 'base_path': '/mnt/data/smart_health_02/lujiaxuan/workingplace/GleasonGrade/segResData1/features-pathoduet-p2/pt_files',
             # loading the features data
@@ -518,9 +636,9 @@ class Config:
         }
 
 
-def Combined(num_parts=200, phase='train', encoder=None):
+def Cohort_TCGA(num_parts=200, phase='train', encoder=None, prefix='Cohort_TCGA_ACC_Phenotype', label='ajcc_stage'):
     cfg = Config()
-    Mydata = CombinedDataset(cfg.Data, phase=phase, prefix="", encoder=encoder)
+    Mydata = Cohort_TCGA_e2e(cfg.Data, phase=phase, encoder=encoder, prefix=prefix, label=label)
 
     print(Mydata[0])
     # dataloader = DataLoader(Mydata)
@@ -563,4 +681,5 @@ if __name__ == '__main__':
     # for i, data in (enumerate(dataloader)):
     #     pass
 
-    Combined()
+    Cohort_TCGA()
+

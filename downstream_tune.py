@@ -437,13 +437,26 @@ if __name__ == '__main__':
     dataname, num_parts, batch_size = args.dataset, args.num_parts, args.batch_size
 
     print("load data...")
-    train_graph_list = load_data4pretrain(args.dataset, args.num_parts, phase='finetune')
-    test_graph_list = load_data4pretrain(args.dataset, args.num_parts, phase='test')
+    train_graph_list = load_data4pretrain(args.dataset, args.num_parts, phase='finetune', encoder=encoder)
+    test_graph_list = load_data4pretrain(args.dataset, args.num_parts, phase='test', encoder=encoder)
 
     print("create Downstream instance...")
+    if 'Cohort_TCGA' in dataname:
+        parts = dataname.split('_')
+        if parts[3] == 'Phenotype':
+            label = '_'.join(parts[4:])
+            class_num_map = {
+                'ajcc_stage':4,
+                'ajcc_t_stage':4,
+                'ajcc_m_stage':2,
+                'ajcc_n_stage':2
+            }
+            class_num = class_num_map[label]
+    else:
+        class_num = dataset_clss_num[dataname]
     pt = Downstream(pretext, gnn_type, encoder, encoder_path, gln=args.layer, cluster_sizes=args.cluster_sizes,
                     mode=args.mode, post_mode=args.post_mode, num_workers=args.num_workers, combine_mode=args.combine_mode,
-                    class_num=dataset_clss_num[dataname], loss_name=args.loss, gnn_ckpt=args.gnn_ckpt)
+                    class_num=class_num, loss_name=args.loss, gnn_ckpt=args.gnn_ckpt)
 
     print("fine-tuning...")
     pt.train(dataname, train_graph_list, test_graph_list, batch_size=batch_size, lr=args.learning_rate, decay=0.0001, epochs=100,

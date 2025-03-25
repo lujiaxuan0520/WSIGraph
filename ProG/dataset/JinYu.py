@@ -26,6 +26,7 @@ except Exception:
 from scipy.spatial import KDTree
 from torch_geometric.data import Data
 
+import io
 import cv2
 # import pdb
 
@@ -126,14 +127,18 @@ class JinYu_e2e(data.Dataset):
     """
 
     def __init__(self, dataset_cfg=None,
-                 phase=None, prefix='JinYu'):
+                 phase=None, prefix='JinYu', encoder=None):
         
+        # client = Client('/mnt/hwfile/smart_health/lujiaxuan/petreloss.conf')
+        self.client = Client('/mnt/petrelfs/yanfang/.petreloss.conf')
+
         self.dataset_cfg = dataset_cfg
         self.fold = self.dataset_cfg['fold']
         self.base_path = self.dataset_cfg['base_path']
         self.h5_path = self.dataset_cfg['h5_path']
         split_file_path = self.dataset_cfg['label_dir'] + f'fold{self.fold}.csv'
         self.slide_data = pd.read_csv(split_file_path)
+        self.encoder = encoder
 
         self.slide_id_2_paths = dict()
         self.slide_path = self.dataset_cfg['slide_path']
@@ -168,6 +173,39 @@ class JinYu_e2e(data.Dataset):
     def __len__(self):
         return len(self.data)
 
+    # check whether the path exits (only for files on the local)
+    def path_exists_local(self, path_list):
+        exists = True
+        for path in path_list:
+            if not os.path.exists(path):
+                exists = False
+                return exists
+        return exists
+
+    def upload_tensor_to_ceph(self, tensor, remote_path):
+        """
+        上传内存中的张量数据到 Ceph
+        :param tensor: 待上传的张量
+        :param remote_path: Ceph 远程路径
+        """
+        try:
+            # 使用 BytesIO 来模拟文件对象
+            with io.BytesIO() as buffer:
+                torch.save(tensor, buffer)  # 将张量保存到内存中的 buffer
+                buffer.seek(0)  # 重置 buffer 的指针
+                self.client.put(remote_path, buffer)  # 上传到 Ceph
+            print(f"Tensor data uploaded to {remote_path} successfully.")
+        except Exception as e:
+            print(f"Error uploading tensor to {remote_path}: {e}")
+
+    # check whether the path exits (only for files on the ceph)
+    def path_exists(self, paths):
+        """检查路径是否存在"""
+        try:
+            return all(self.client.contains(path) for path in paths)
+        except:
+            return False
+
     def __getitem__(self, idx):
         data_dict = dict()  # {slide, slide_label, instance_label}
         # info = self.data_info[idx]
@@ -178,7 +216,43 @@ class JinYu_e2e(data.Dataset):
         slide_label = self.label[idx]
         data_dict.update(slide_label=slide_label)
 
-        # load the patch data
+        # define the saved data and features
+        saved_data_path = os.path.join('yanfang:s3://yanfang3/WSI_FM_features_ljx/data', self.__class__.__name__, slide_id)
+        edge_index_file = os.path.join(saved_data_path, 'edge_index.pt')
+        # imgs_256_file = os.path.join(saved_data_path, 'imgs_256.pt')
+        coordinates_file = os.path.join(saved_data_path, 'coordinates.pt')
+        features_path_view = os.path.join(saved_data_path.replace("data", "features"), self.encoder+"_view.pt")
+        load_from_ceph_success = False
+
+        '''
+        if the features of the patch exists, do not need load it in the dataset module,
+        since it will be loaded in the model module, so just return the random data, 
+        but should load the other saved data
+        '''
+        # save the edge and coordinate information alone for each encoder instead of GigaPath
+        if self.encoder not in ['GigaPath']:
+            edge_index_file = edge_index_file.replace(".pt", "_"+self.encoder+".pt")
+            coordinates_file = coordinates_file.replace(".pt", "_"+self.encoder+".pt")
+        if self.path_exists([features_path_view, edge_index_file, coordinates_file]):
+            # x_rand = torch.rand((500, 3, 224, 224))
+            # load other information
+            edge_index_bytes = self.client.get(edge_index_file)
+            coordinates_bytes = self.client.get(coordinates_file)
+
+            if None in [edge_index_bytes, coordinates_bytes]:
+                load_from_ceph_success = False
+            else:
+                edge_index = torch.load(io.BytesIO(edge_index_bytes))
+                coordinates = torch.load(io.BytesIO(coordinates_bytes))
+                x_1 = torch.rand((coordinates.shape[0], 3, 224, 224))
+                view_1_data = Data(x=x_1, edge_index=edge_index)
+                view_1 = np.array([view_1_data, coordinates])
+                load_from_ceph_success = True
+                return view_1, view_1, saved_data_path
+
+
+        # load and process the raw data 
+        # if not load_from_ceph_success: 
         h5_path = self.slide_id_2_paths[slide_id]
         slide_id = slide_id.replace('&', '/').split('切片扫描/')[-1]
         slide_path = os.path.join(self.slide_path, slide_id + '.kfb')
@@ -192,8 +266,13 @@ class JinYu_e2e(data.Dataset):
             patch_size = coords.attrs['patch_size']
 
             # # random choice when over 500 patches exists
-            # if len(coords) > self.dataset_cfg['max_patch_num']:
-            #     coords = random.sample(list(coords), self.dataset_cfg.max_patch_num)
+            coords = list(coords)
+            most_patch_num = 500
+            if len(coords) > most_patch_num: # only retain 500 patches
+                coords = random.sample(list(coords), most_patch_num)
+            least_patch_num = 200
+            if len(coords) < least_patch_num:
+                coords += random.choices(coords, k=least_patch_num - len(coords))
 
             for coord in coords:
                 # rescale the coord for kfb and sdpc
@@ -260,13 +339,28 @@ class JinYu_e2e(data.Dataset):
             view_1, view_2 = g_1, g_2
             coord_1, coord_2 = coordinates, coordinates
 
+        # save the data
+        # os.makedirs(saved_data_path, exist_ok=True)
+        # torch.save(imgs_512, imgs_512_file)
+        # torch.save(edge_index_512, edge_index_512_file)
+        # torch.save(imgs_256, imgs_256_file)
+        # torch.save(edge_index_256, edge_index_256_file)
+        # self.upload_tensor_to_ceph(imgs_512, imgs_512_file)
+        # self.upload_tensor_to_ceph(edge_index_512, edge_index_512_file)
+        # self.upload_tensor_to_ceph(coordinates_512, coordinates_512_file)
+        # self.upload_tensor_to_ceph(imgs_256, imgs_256_file)
+        # self.upload_tensor_to_ceph(edge_index_256, edge_index_256_file)
+        # self.upload_tensor_to_ceph(coordinates_256, coordinates_256_file)
+        self.upload_tensor_to_ceph(view_1.edge_index, edge_index_file)
+        self.upload_tensor_to_ceph(coord_1, coordinates_file)
+
         view_1 = np.array([view_1, coord_1])
         view_2 = np.array([view_2, coord_2])
 
         if self.phase == 'train':
-            return view_1, view_2
+            return view_1, view_2, saved_data_path
         else:
-            return view_1, view_2, slide_label
+            return view_1, view_2, slide_label, saved_data_path
 
 
 # def Train_dataset(cfg, phase='train'):
@@ -304,9 +398,9 @@ class Config:
         }
 
 
-def JinYu(num_parts=200, phase='train'):
+def JinYu(num_parts=200, phase='train', encoder=None):
     cfg = Config()
-    Mydata = JinYu_e2e(cfg.Data, phase=phase)
+    Mydata = JinYu_e2e(cfg.Data, phase=phase, encoder=encoder)
 
     # print(Mydata[0])
     # dataloader = DataLoader(Mydata)

@@ -11,8 +11,11 @@ from torchvision import transforms
 import torch.nn.functional as F
 import torch.nn.functional as F
 from random import shuffle
+from petrel_client.client import Client
 import random
 import math
+import os
+import io
 
 import sys
 sys.path.append('/mnt/hwfile/smart_health/lujiaxuan/prov-gigapath')
@@ -143,12 +146,12 @@ class FT(torch.nn.Module):
 
 
     def forward_ft(self, x, edge_index, batch, coord=None):
-        print("x:", x.shape)
-        print("edge_index:", edge_index.shape)
-        print("batch:", batch.shape)
-        print("coord:", coord.shape)
-        if int(x.shape[0]) == 2994:
-            print('debug')
+        # print("x:", x.shape)
+        # print("edge_index:", edge_index.shape)
+        # print("batch:", batch.shape)
+        # print("coord:", coord.shape)
+        # if int(x.shape[0]) == 2994:
+        #     print('debug')
         batch_size = batch.max().item() + 1
         abmil = True if self.combine_mode == 'abmil' else False
         
@@ -277,6 +280,8 @@ class Downstream(torch.nn.Module):
         self.encoder=encoder
         self.enc=PatchEncoder(encoder, encoder_path)
 
+        self.client = Client('/mnt/petrelfs/yanfang/.petreloss.conf')
+
         self.configure_loss_metric()
 
         # pass: get the input_dim and hid_dim for each encoder
@@ -305,7 +310,7 @@ class Downstream(torch.nn.Module):
             self.gnn = ClusterGNN(input_dim=input_dim, hid_dim=hid_dim, out_dim=hid_dim,
                                   cluster_sizes=cluster_sizes, pool=None, gnn_type=gnn_type)
             self.gnn.load_state_dict(torch.load(gnn_ckpt))
-        elif mode == 'soft': # use GNN to learn the cluster id
+        elif 'soft' in mode: # use GNN to learn the cluster id
             if encoder=='GigaPath': # temp change the dimension
                 input_dim, hid_dim = 1536, 1536
             elif encoder=='UNI':
@@ -314,7 +319,8 @@ class Downstream(torch.nn.Module):
                 input_dim, hid_dim = 1024, 1024
             self.gnn = SoftClusterGNN(input_dim=input_dim, hid_dim=hid_dim, out_dim=hid_dim,
                                   cluster_sizes=cluster_sizes, pool=None, gnn_type=gnn_type, phase='finetune')
-            self.gnn.load_state_dict(torch.load(gnn_ckpt))
+            if not mode == 'soft-random': # not random weight
+                self.gnn.load_state_dict(torch.load(gnn_ckpt))
         elif mode == 'GigaPath': # use GigaPath-Slide encoder
             self.gnn = slide_encoder = create_model(gnn_ckpt, "gigapath_slide_enc12l768d", 1536)
 
@@ -356,7 +362,7 @@ class Downstream(torch.nn.Module):
                 shuffle(graph_list)
 
 
-            if dataname in ['Prostate', 'TCGA', 'JinYu']:
+            if dataname in ['Prostate', 'TCGA', 'JinYu'] or 'Cohort_TCGA' in dataname:
                 loader = DataLoader(graph_list, batch_size=batch_size, shuffle=False,
                                      num_workers=self.num_workers, drop_last=True)  # you must set shuffle=False !
                 loader.collate_fn = collate_fn
@@ -463,6 +469,163 @@ class Downstream(torch.nn.Module):
         self.valid_metrics = metrics.clone(prefix='val_')
         self.test_metrics = metrics.clone(prefix='test_')
 
+    def upload_tensor_to_ceph(self, tensor, remote_path):
+        """
+        上传内存中的张量数据到 Ceph
+        :param tensor: 待上传的张量
+        :param remote_path: Ceph 远程路径
+        """
+        try:
+            # 使用 BytesIO 来模拟文件对象
+            with io.BytesIO() as buffer:
+                torch.save(tensor, buffer)  # 将张量保存到内存中的 buffer
+                buffer.seek(0)  # 重置 buffer 的指针
+                self.client.put(remote_path, buffer)  # 上传到 Ceph
+            print(f"Tensor data uploaded to {remote_path} successfully.")
+        except Exception as e:
+            print(f"Error uploading tensor to {remote_path}: {e}")
+
+    def load_tensor_from_ceph(self, file_path):
+        try:
+            data_bytes = self.client.get(file_path)
+            if data_bytes is None:
+                raise ValueError(f"Failed to load {file_path} from Ceph: Data is None")
+            tensor = torch.load(io.BytesIO(data_bytes))
+            return tensor
+        except Exception as e:
+            print(f"Error loading tensor from {file_path}: {e}")
+            raise e
+
+    # check whether the path exits (only for files on the ceph)
+    def path_exists(self, paths):
+        """检查路径是否存在"""
+        try:
+            return all(self.client.contains(path) for path in paths)
+        except:
+            return False
+
+    # 定义处理单个 batch 的函数
+    def process_batch(self, batch_x, batch_indices, file_paths, view):
+        unique_batches = batch_indices.unique()
+        processed_embeddings = []
+        new_batch = []
+
+        for batch_id in unique_batches:
+            # Get the indices for the current batch_id
+            mask = (batch_indices == batch_id)
+            x_subset = batch_x[mask]
+            file_path = file_paths[batch_id.item()]
+
+            file_path = file_path.replace("/data/", "/features/")
+            file_path = os.path.join(file_path, self.encoder + '_' + view + '.pt')
+
+            if self.path_exists([file_path]):
+                try:
+                    # Load the embedding from Ceph
+                    embedding = self.load_tensor_from_ceph(file_path).cuda()
+                except Exception as e:
+                    print(f"Error loading {file_path} from Ceph: {e}")
+                    # If loading fails, compute and upload the embedding
+                    embedding = self.compute_and_upload_embedding(x_subset, file_path, view)
+            else:
+                # Compute and upload the embedding
+                embedding = self.compute_and_upload_embedding(x_subset, file_path, view)
+
+            
+
+            ori_batch = batch_indices[mask]
+            if embedding.shape[0] != ori_batch.shape[0]:
+                print("!!!Error dimension for reading file:", file_path)
+                # modify the information for consistent dimension
+                # # tmp_batch = torch.full((embedding.shape[0],), batch_id)
+                # # new_batch.append(tmp_batch.cuda())
+                # rows_to_add = ori_batch.shape[0] - embedding.shape[0]
+                # zero_rows = torch.zeros((rows_to_add, embedding.shape[1])).cuda()
+                # indices = torch.randperm(embedding.shape[0] + rows_to_add).cuda()
+                # augmented_embedding = torch.cat([embedding, zero_rows], dim=0)
+                # embedding = augmented_embedding[indices]
+                ori_batch_size = ori_batch.shape[0]
+                embedding_size = embedding.shape[0]
+                
+                if ori_batch_size > embedding_size:
+                    # Case 1: ori_batch has more samples than embedding
+                    rows_to_add = ori_batch_size - embedding_size
+                    zero_rows = torch.zeros((rows_to_add, embedding.shape[1])).cuda()
+                    augmented_embedding = torch.cat([embedding, zero_rows], dim=0)
+                    indices = torch.randperm(augmented_embedding.shape[0]).cuda()
+                    embedding = augmented_embedding[indices]
+                elif ori_batch_size < embedding_size:
+                    # Case 2: ori_batch has fewer samples than embedding
+                    rows_to_remove = embedding_size - ori_batch_size
+                    indices = torch.randperm(embedding_size).cuda()
+                    selected_indices = indices[:ori_batch_size]
+                    embedding = embedding[selected_indices]
+                
+            new_batch.append(ori_batch)
+            processed_embeddings.append(embedding)
+                
+        # if embedding.shape[0] != ori_batch.shape[0]:
+        #     batch_indices = torch.cat(new_batch, dim=0)
+
+        # Concatenate all embeddings back into a single tensor
+        return torch.cat(processed_embeddings, dim=0), torch.cat(new_batch, dim=0)
+
+    # Define a helper function to compute and upload embeddings
+    def compute_and_upload_embedding(self, x_subset, file_path, view):
+        # Move the subset to GPU if not already
+        x_subset = x_subset.cuda()
+
+        #get the patch embedding
+        if self.enc is not None:
+            with torch.no_grad():
+                if self.encoder == 'Pathoduet':
+                    enc_output = self.enc(x_subset)[0][:, 2:].mean(dim=1)
+                elif self.encoder in ['ResNet50', 'ResNet18']:
+                    enc_output = self.enc(x_subset)
+                elif self.encoder=='GigaPath':
+                    # with torch.no_grad():
+                    enc_output = self.enc(x_subset)
+                    
+                    # ## process the big batch by multiple mini batch
+                    # outputs = []
+                    # batch_size=200 # process every 200 elements
+                    # N = batch.x.shape[0]
+                    # for i in range(0, N, batch_size): 
+                    #     x_batch = batch.x[i:i+batch_size]
+                    #     encoded_batch = self.enc(x_batch)
+                    #     outputs.append(encoded_batch)
+                    
+                    # batch.x = torch.cat(outputs, dim=0)
+                elif self.encoder=='UNI':
+                    # transform = transforms.Compose(
+                    #     [
+                    #         transforms.Resize(224),
+                    #         transforms.ToTensor(),
+                    #         transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+                    #     ]
+                    # )
+                    x_subset = F.interpolate(x_subset, size=(224, 224), mode="bilinear", align_corners=False)
+                    mean = torch.tensor([0.485, 0.456, 0.406], dtype=x_subset.dtype, device=x_subset.device)
+                    std = torch.tensor([0.229, 0.224, 0.225], dtype=x_subset.dtype, device=x_subset.device)
+                    x_subset = (x_subset - mean[None, :, None, None]) / std[None, :, None, None]
+                    enc_output = self.enc(x_subset)
+                elif self.encoder=='PathOrchestra':
+                    enc_output = self.enc(x_subset)
+                else:
+                    raise ValueError(f"Unsupported encoder type: {self.encoder}")
+                
+                embedding = enc_output.detach()  # Detach if gradient is not needed
+        else:
+            raise ValueError("Encoder (self.enc) is not defined.")
+
+        # Upload the embedding to Ceph
+        try:
+            self.upload_tensor_to_ceph(embedding.cpu(), file_path)
+        except Exception as e:
+            print(f"Error uploading {file_path} to Ceph: {e}")
+
+        return embedding
+
 
     def train_downstream_ft(self, model, loader1, loader2, optimizer):
         model.train()
@@ -472,48 +635,14 @@ class Downstream(torch.nn.Module):
         for step, batch in enumerate(loader1):
         # for step, batch in enumerate(zip(loader1)):
             # batch1, batch2 = batch[0]
+            file_paths = batch[1]
             batch, _, coord, _, labels = batch[0]
             optimizer.zero_grad()
 
             batch.x, batch.edge_index, batch.batch = batch.x.cuda(), batch.edge_index.cuda(), batch.batch.cuda()
 
-            # get the patch embedding
-            if self.enc is not None:
-                with torch.no_grad():
-                    if self.encoder == 'Pathoduet':
-                        batch.x = self.enc(batch.x)[0][:, 2:].mean(dim=1)
-                    elif self.encoder in ['ResNet50', 'ResNet18']:
-                        batch.x = self.enc(batch.x)
-                    elif self.encoder=='GigaPath':
-                        # with torch.no_grad():
-                        # batch.x = self.enc(batch.x)
-
-                        ## process the big batch by multiple mini batch
-                        outputs = []
-                        batch_size=10 # process every 200 elements
-                        N = batch.x.shape[0]
-                        for i in range(0, N, batch_size): 
-                            x_batch = batch.x[i:i+batch_size]
-                            encoded_batch = self.enc(x_batch)
-                            outputs.append(encoded_batch)
-                        
-                        batch.x = torch.cat(outputs, dim=0)
-                    elif self.encoder=='UNI':
-                        # transform = transforms.Compose(
-                        #     [
-                        #         transforms.Resize(224),
-                        #         transforms.ToTensor(),
-                        #         transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-                        #     ]
-                        # )
-                        x_subset = F.interpolate(x_subset, size=(224, 224), mode="bilinear", align_corners=False)
-                        mean = torch.tensor([0.485, 0.456, 0.406], dtype=x_subset.dtype, device=x_subset.device)
-                        std = torch.tensor([0.229, 0.224, 0.225], dtype=x_subset.dtype, device=x_subset.device)
-                        x_subset = (x_subset - mean[None, :, None, None]) / std[None, :, None, None]
-                        batch.x = self.enc(batch.x)
-                    elif self.encoder=='PathOrchestra':
-                        batch.x = self.enc(batch.x)
-
+            batch_embeddings, batch.batch = self.process_batch(batch.x, batch.batch, file_paths, view="view")
+            batch.x = batch_embeddings
                             
 
             if labels.dtype != torch.long:
@@ -541,45 +670,49 @@ class Downstream(torch.nn.Module):
 
         with torch.no_grad():  # Disable gradient computation
             for step, batch in enumerate(test_loader):
-                batch, _, coord, _, labels = batch
+                # batch, _, coord, _, labels = batch
+                file_paths = batch[1]
+                batch, _, coord, _, labels = batch[0]
 
                 # Ensure data is on the correct device (cuda in this case)
                 batch.x, batch.edge_index, batch.batch = batch.x.cuda(), batch.edge_index.cuda(), batch.batch.cuda()
 
-                # Get the patch embedding
-                if self.enc is not None:
-                    if self.encoder == 'Pathoduet':
-                        batch.x = self.enc(batch.x)[0][:, 2:].mean(dim=1)
-                    elif self.encoder in ['ResNet50', 'ResNet18']:
-                        batch.x = self.enc(batch.x)
-                    elif self.encoder=='GigaPath':
-                        # with torch.no_grad():
-                        batch.x = self.enc(batch.x)
-                    elif self.encoder=='UNI':
-                        # transform = transforms.Compose(
-                        #     [
-                        #         transforms.Resize(224),
-                        #         transforms.ToTensor(),
-                        #         transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
-                        #     ]
-                        # )
-                        x_subset = F.interpolate(x_subset, size=(224, 224), mode="bilinear", align_corners=False)
-                        mean = torch.tensor([0.485, 0.456, 0.406], dtype=x_subset.dtype, device=x_subset.device)
-                        std = torch.tensor([0.229, 0.224, 0.225], dtype=x_subset.dtype, device=x_subset.device)
-                        x_subset = (x_subset - mean[None, :, None, None]) / std[None, :, None, None]
-                        batch.x = self.enc(batch.x)
-                    elif self.encoder=='PathOrchestra':
-                        batch.x = self.enc(batch.x)
+                # # Get the patch embedding
+                # if self.enc is not None:
+                #     if self.encoder == 'Pathoduet':
+                #         batch.x = self.enc(batch.x)[0][:, 2:].mean(dim=1)
+                #     elif self.encoder in ['ResNet50', 'ResNet18']:
+                #         batch.x = self.enc(batch.x)
+                #     elif self.encoder=='GigaPath':
+                #         # with torch.no_grad():
+                #         batch.x = self.enc(batch.x)
+                #     elif self.encoder=='UNI':
+                #         # transform = transforms.Compose(
+                #         #     [
+                #         #         transforms.Resize(224),
+                #         #         transforms.ToTensor(),
+                #         #         transforms.Normalize(mean=(0.485, 0.456, 0.406), std=(0.229, 0.224, 0.225)),
+                #         #     ]
+                #         # )
+                #         x_subset = F.interpolate(x_subset, size=(224, 224), mode="bilinear", align_corners=False)
+                #         mean = torch.tensor([0.485, 0.456, 0.406], dtype=x_subset.dtype, device=x_subset.device)
+                #         std = torch.tensor([0.229, 0.224, 0.225], dtype=x_subset.dtype, device=x_subset.device)
+                #         x_subset = (x_subset - mean[None, :, None, None]) / std[None, :, None, None]
+                #         batch.x = self.enc(batch.x)
+                #     elif self.encoder=='PathOrchestra':
+                #         batch.x = self.enc(batch.x)
+                batch_embeddings, batch.batch = self.process_batch(batch.x, batch.batch, file_paths, view="view")
+                batch.x = batch_embeddings
 
                 # Forward pass
-                x = self.model.module.forward_ft(batch.x, batch.edge_index, batch.batch, coord)
+                x = model.module.forward_ft(batch.x, batch.edge_index, batch.batch, coord)
 
                 if labels.dtype != torch.long:
                     labels = labels.long()
 
                 # Compute loss
                 labels = labels.to(x.device)
-                loss = self.model.module.loss_ft(x, labels)
+                loss = model.module.loss_ft(x, labels)
                 test_loss_accum += loss[0].item()
 
                 # Update metrics

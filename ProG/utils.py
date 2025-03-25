@@ -22,6 +22,7 @@ from ProG.dataset.Tsinghua import Tsinghua
 from ProG.dataset.XIJING import XIJING
 from ProG.dataset.IHC import IHC
 from ProG.dataset.JinYu import JinYu
+from ProG.dataset.cohort_TCGA import Cohort_TCGA
 from ProG.dataset.Combined import Combined
 
 seed = 0
@@ -66,7 +67,13 @@ def gen_ran_output(data, model):
 
 # used in pre_train.py
 def load_data4pretrain(dataname='CiteSeer', num_parts=200, phase='train', encoder=None):
-    graph_list = datasets[dataname](num_parts=num_parts, phase=phase, encoder=encoder)
+    if 'Cohort_TCGA' in dataname:
+        parts = dataname.split('_')
+        prefix = '_'.join(parts[:4])
+        label = '_'.join(parts[4:])
+        graph_list = Cohort_TCGA(num_parts=num_parts, phase=phase, encoder=encoder, prefix=prefix, label=label)
+    else:
+        graph_list = datasets[dataname](num_parts=num_parts, phase=phase, encoder=encoder)
 
     return graph_list
 
