@@ -110,6 +110,7 @@ python downstream_tune.py --model GraphCL --gnn GCN --mode soft --combine_mode h
     - hier_weighted_mean(待验证)：将每一级特征进行可学习权重的加权平均，再平均
   - --post_mode
     - linear_probing：冻结GNN，仅训练最终特征融合中的可学习权重和最终的分类头
+    - abmil：冻结GNN，仅训练abmil
  - --loss
    - WeightedCrossEntropyLoss: 加权的单标签分类
    - MultiLabelBCELoss：多标签分类

@@ -31,6 +31,8 @@ do
     nohup python downstream_tune.py --model GraphCL --gnn GCN --mode soft --combine_mode hier_weighted_mean --dataset JinYu --encoder Pathoduet --encoder_path /mnt/hwfile/smart_health/lujiaxuan/PathoDuet/models/checkpoint_p2.pth --learning_rate 0.0001 --cluster_sizes 200 200 100 100 50 --batch_size 4 --num_parts 500 --num_workers 32 --loss WeightedCrossEntropyLoss --gnn_ckpt "$pth_file" --checkpoint_suffix GCN_soft_pool_cluster_200_200_100_100_50_SGD_lr_0.0001_batch_8_worker_32 > "FT_JinYu_${filename}.txt" 2>&1 &
 done
 
+# 最好的用--mode soft --combine_mode hier_weighted_mean --post_mode linear_probing
+
 # ---patch encoder: GigaPath-Tile---
 # patch encoder: GigaPath-Tile, slide encoder: Ours
 # freeze gcn(GigaPath-Slide), tuning cls head with abmil
